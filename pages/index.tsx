@@ -2,10 +2,31 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { getCookie } from 'typescript-cookie'
+
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  let router = useRouter() 
+
+
+
+
+/* // Use a useEffect hook to check if the user is logged in
+useEffect(() => {
+  let cookie = getCookie('name')
+   if(cookie !='value')
+   {
+       router.push('/login')
+   }
+// If the user is not logged in, redirect them to the login page
+}, [router]);
+ */
+
+
   return (
     <>
       <Head>
