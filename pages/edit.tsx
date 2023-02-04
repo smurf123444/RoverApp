@@ -2,8 +2,7 @@
 
 import React, {useEffect, useState} from "react";
 import { useRouter } from 'next/router';
-import {Button, Box, ButtonGroup, Grid, Typography, Stack, Divider, Container} from '@mui/material';
-import sqlite3 from 'sqlite3';
+import {Button, Box, ButtonGroup, Grid, Typography, Stack, Divider, Container, TextField, withStyles, createStyles} from '@mui/material';
 
 import { getCookie } from 'typescript-cookie';
 import axios from "axios";
@@ -30,7 +29,18 @@ export default function Edit() {
     const [availability, setAvailability] = useState('');
     const [address, setAddress] = useState('');
     const [typicalTodo, setTypicalTodo] = useState('');
-
+    const styles = theme =>
+    createStyles({
+      form: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        '& > *': {
+          margin: theme.spacing(1),
+          width: '25ch',
+        },
+      },
+    });
 
     const router = useRouter()
 
@@ -151,6 +161,73 @@ const handleInfo = async () => {
             console.log("TITS")
         }
     }
+
+
+    const Form = ({ classes, handleSubmit, userName, setUserName, aboutMe, setAboutMe, aboutHome, setAboutHome, aboutPets, setPets, picURLS, setPicUrls, services, setServices, sizeCanHost, setSizeCanHost, sizeCanWatch, setSizeCanWatch, availability, setAvailability, address, setAddress, typicalTodo, setTypicalTodo }) => (
+      <form className={classes.form} onSubmit={handleSubmit}>
+        <TextField
+          label="Username"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+        />
+        <TextField
+          label="About Me"
+          value={aboutMe}
+          onChange={(e) => setAboutMe(e.target.value)}
+        />
+        <TextField
+          label="About Home"
+          value={aboutHome}
+          onChange={(e) => setAboutHome(e.target.value)}
+        />
+        <TextField
+          label="About Pets"
+          value={aboutPets}
+          onChange={(e) => setPets(e.target.value)}
+        />
+        <TextField
+          label="Picture URLs"
+          value={picURLS}
+          onChange={(e) => setPicUrls(e.target.value)}
+        />
+        <TextField
+          label="Services"
+          value={services}
+          onChange={(e) => setServices(e.target.value)}
+        />
+        <TextField
+          label="Size Can Host"
+          value={sizeCanHost}
+          onChange={(e) => setSizeCanHost(e.target.value)}
+        />
+        <TextField
+          label="Size Can Watch"
+          value={sizeCanWatch}
+          onChange={(e) => setSizeCanWatch(e.target.value)}
+        />
+        <TextField
+          label="Availability"
+          value={availability}
+          onChange={(e) => setAvailability(e.target.value)}
+        />
+        <TextField
+          label="Address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+        <TextField
+          label="Typical Todo"
+          value={typicalTodo}
+          onChange={(e) => setTypicalTodo(e.target.value)}
+        />
+        <Button type="submit" variant="contained">
+          Save
+        </Button>
+      </form>
+    );
+  
+
+
     return (
         <div>
 {/*            <form onSubmit={handleSubmit}>
@@ -173,32 +250,149 @@ const handleInfo = async () => {
 </p> 
 </form>*/}
             {authenticated ? (
-                <div>
-                    <TopNav />
-
-
-                    <form onSubmit={handleSubmit}>
-<input value={userName} onChange={(e) => setUserName(e.target.value)} />
-<input value={aboutMe} onChange={(e) => setAboutMe(e.target.value)} />
-<input value={aboutHome} onChange={(e) => setAboutHome(e.target.value)} />
-<input value={aboutPets} onChange={(e) => setPets(e.target.value)} />
-<input value={picURLS} onChange={(e) => setPicUrls(e.target.value)} />
-<input value={services} onChange={(e) => setServices(e.target.value)} />
- <input value={sizeCanHost} onChange={(e) => setSizeCanHost(e.target.value)} />
-<input value={sizeCanWatch} onChange={(e) => setSizeCanWatch(e.target.value)} /> 
-<input value={availability} onChange={(e) => setAvailability(e.target.value)} />
-<input value={address} onChange={(e) => setAddress(e.target.value)} />
-<input value={typicalTodo} onChange={(e) => setTypicalTodo(e.target.value)} />
-<button type="submit">Save</button>
-
-{/* Hydration Error */}
-{/* <p>
-    {authenticated ? (<h3>Authenticated</h3>):(<h3>NOT Authenticated</h3>)}
-</p> */}
+              <div>
+<TopNav />
+<Container maxWidth="sm">
+<Box mt={8}>
+<Typography component="h1" variant="h5">
+Edit Profile
+</Typography>
+<form noValidate onSubmit={handleSubmit}>
+<TextField
+           variant="outlined"
+           margin="normal"
+           required
+           fullWidth
+           id="username"
+           label="Username"
+           name="username"
+           autoComplete="username"
+           value={userName}
+           onChange={(e) => setUserName(e.target.value)}
+         />
+<TextField
+           variant="outlined"
+           margin="normal"
+           required
+           fullWidth
+           name="aboutMe"
+           label="About Me"
+           id="aboutMe"
+           value={aboutMe}
+           onChange={(e) => setAboutMe(e.target.value)}
+         />
+<TextField
+           variant="outlined"
+           margin="normal"
+           required
+           fullWidth
+           name="aboutHome"
+           label="About Home"
+           id="aboutHome"
+           value={aboutHome}
+           onChange={(e) => setAboutHome(e.target.value)} 
+         />
+<TextField
+           variant="outlined"
+           margin="normal"
+           required
+           fullWidth
+           name="aboutPets"
+           label="About Pets"
+           id="aboutPets"
+           value={aboutPets}
+           onChange={(e) => setPets(e.target.value)}
+         />
+<TextField
+           variant="outlined"
+           margin="normal"
+           required
+           fullWidth
+           name="picURLS"
+           label="Picture URLs"
+           id="picURLS"
+           value={picURLS}
+           onChange={(e) => setPicUrls(e.target.value)}
+         />
+<TextField
+           variant="outlined"
+           margin="normal"
+           required
+           fullWidth
+           name="services"
+           label="Services"
+           id="services"
+           value={services}
+           onChange={(e) => setServices(e.target.value)}
+         />
+<TextField
+           variant="outlined"
+           margin="normal"
+           required
+           fullWidth
+           name="sizeCanHost"
+           label="Size of Pets I Can Host"
+           id="sizeCanHost"
+           value={sizeCanHost}
+           onChange={(e) => setSizeCanHost(e.target.value)}
+         />
+<TextField
+           variant="outlined"
+           margin="normal"
+           required
+           fullWidth
+           name="sizeCanWatch"
+           label="Size of Pets I Can Watch"
+           id="sizeCanWatch"
+           value={sizeCanWatch}
+           onChange={(e) => setSizeCanWatch(e.target.value)}
+         />
+<TextField
+           variant="outlined"
+           margin="normal"
+           required
+           fullWidth
+           name="availability"
+           label="Availability"
+           id="availability"
+           value={availability}
+           onChange={(e) => setAvailability(e.target.value)} 
+         />
+<TextField
+           variant="outlined"
+           margin="normal"
+           required
+           fullWidth
+           name="address"
+           label="Address"
+           id="address"
+           value={address}
+           onChange={(e) => setAddress(e.target.value)} 
+         />
+<TextField
+           variant="outlined"
+           margin="normal"
+           required
+           fullWidth
+           name="typicalTodo"
+           label="Typical Todo"
+           id="typicalTodo"
+           value={typicalTodo}
+           onChange={(e) => setTypicalTodo(e.target.value)} 
+         />
+<Button
+           type="submit"
+           fullWidth
+           variant="contained"
+           color="primary"
+         >
+Update
+</Button>
 </form>
-
-                    <BottomNav />
-                </div>
+</Box>
+</Container>
+<BottomNav />
+</div>
             ) : (
                     <div>
                         <TopNav />

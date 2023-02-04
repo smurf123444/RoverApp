@@ -54,7 +54,7 @@ export default function Auth() {
     const [picURLS, setPicUrls] = useState('');
     const [services, setServices] = useState('');
     const [sizeCanHost, setSizeCanHost] = useState('');
-    const [SizeCanWatch, setSizeCanWatch] = useState('');
+    const [sizeCanWatch, setSizeCanWatch] = useState('');
     const [availability, setAvailability] = useState('');
     const [address, setAddress] = useState('');
     const [typicalTodo, setTypicalTodo] = useState('');
@@ -97,7 +97,7 @@ export default function Auth() {
 
 const handleInfo = async () => {
     try {
-   const response = await axios.post<{ rowID: string, data: any }>('http://localhost:3000/api/userInfo', {
+   const response = await axios.post<{ rowID: string, data: any }>('http://localhost:3000/api/accountInfo', {
       token: tokenCall,
       username: username
     });
@@ -170,8 +170,8 @@ const handleInfo = async () => {
     AboutPets= {aboutPets}
     PicturesURLs= {picURLS}
     Services= {services}
-    SizeCanHost= {0}
-    SizeCanWatch= {0}
+    SizeCanHost= {sizeCanHost}
+    SizeCanWatch= {sizeCanWatch}
     Availability= {availability}
     Address= {address}
     TypicalTodo= {typicalTodo}

@@ -127,47 +127,7 @@ app.prepare().then(() => {
       }
     });
   });
-  
-  server.post('/api/userInfo', (req, res) => {
-    const { token, username } = req.body;
-    console.log(token)
-    let row2Item = ''
-    db.get(`SELECT * FROM activeUsers WHERE username = ?`, [username], (err, row) => {
-      if (err) {
-        console.error(err.message);
-        res.status(500).send({ error: 'Error with Token Search' });
-      } else if (!row) {
-        console.log("Error...");
-      //  res.send({ message: "Unsuccessful with Authentication..." });
 
-        res.status(401).send({ error: 'Token is incorrect' });
-      }else if (row)
-      {
-        row2Item = row.username;
-        db.get(`SELECT * FROM userInfo WHERE ID = ?`, [username], (err, row) => {
-          if (err) {
-            console.error(err.message);
-            console.log("Error in 500")
-            res.status(500).send({ error: 'Error with UserInfo Search' });
-          } else if (!row) {
-            console.log("Error...");
-          //  res.send({ message: "Unsuccessful with Authentication..." });
-            res.status(401).send({ error: 'Username is incorrect' });
-          }else if (row)
-          {
-            res.send({ rowID: row.ID, data: row });
-
-          } 
-          else {
-            res.status(401).send({ error: 'Token is incorrect' });
-          }
-        });
-      } 
-      else {
-        res.status(401).send({ error: 'Token is incorrect' });
-      }
-    });
-  }); 
 
   server.put('/api/EditUserInfo', (req, res) => {
     console.log(req.body)

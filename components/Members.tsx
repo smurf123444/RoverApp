@@ -6,8 +6,8 @@ interface UserProps {
   AboutPets: string;
   PicturesURLs: string;
   Services: string;
-  SizeCanHost: number;
-  SizeCanWatch: number;
+  SizeCanHost: string;
+  SizeCanWatch: string;
   Availability: string;
   Address: string;
   TypicalTodo: string;
@@ -49,19 +49,19 @@ const MembersPage: React.FC<UserProps> = (props) => {
       </Container>
       <Container sx={{ backgroundColor: "tan"}}>
       <Typography variant="body1" gutterBottom>
-          Can Host
+          Can Host: &nbsp;
           {SizeCanHost}
       </Typography>
       </Container>
       <Container sx={{ backgroundColor: "tan"}}>
       <Typography variant="body1" gutterBottom>
-          Can Watch
+          Can Watch: &nbsp;
           {SizeCanWatch}
       </Typography>
       </Container>
       <Container sx={{ backgroundColor: "tan"}}>
       <Typography variant="body1" gutterBottom>
-      Availability
+      Availability: &nbsp;
       {Availability}
       </Typography>
       </Container>
@@ -77,15 +77,15 @@ const MembersPage: React.FC<UserProps> = (props) => {
 >
 <Container sx={{ backgroundColor: "tan"}}>
 <Typography variant="h6" gutterBottom>
-PICTURES OF PET SITTINGS:
+PICTURES OF PET SITTINGS: &nbsp;
+<br></br>
 {PicturesURLs}
       </Typography>
       <br></br>
-<Link href="#">Link</Link>
       </Container>
       <Container sx={{ backgroundColor: "tan"}}>
       <Typography variant="subtitle1" gutterBottom>
-About {ID}
+About {ID}: 
 <br></br>
 Home:
 <br></br>
@@ -96,29 +96,19 @@ Me:
 {AboutMe}
       </Typography>
       <br></br>
-<Link href="#">Link</Link>
       </Container>
       <Container sx={{ backgroundColor: "tan"}}>
       <Typography variant="body1" gutterBottom>
-      Your Pets
+      Your Pets: &nbsp;
       <br></br>
       {AboutPets}
       <br></br>
-Add your pets or edit their info
       </Typography>
-<Link href="#">Link</Link>
+
       </Container>
-
-      </Stack>
-</Container>
-
-    </Box>
-    
-    </Stack>
-    <br></br>
-    <Container sx={{ backgroundColor: "tan"}}>
+      <Container sx={{ backgroundColor: "tan"}}>
       <Typography variant="body1" gutterBottom>
-     The Neighborhood
+     The Neighborhood: &nbsp;
       <br></br>
       {Address}
       <br></br>
@@ -126,8 +116,15 @@ Typical Todos:
 <br></br>
 {TypicalTodo}
       </Typography>
-<Link href="#">Link</Link>
       </Container>
+      </Stack>
+</Container>
+
+    </Box>
+    
+    </Stack>
+    <br></br>
+
     </div>
   );
 };
