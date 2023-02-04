@@ -43,16 +43,16 @@ const AccountPage: React.FC<UserProps> = (props) => {
   
          {username}
          <br></br>
-         <Link href="#">EDIT PROFILE</Link>
+         <Link href="/edit">EDIT PROFILE</Link>
          <br></br>
-         <Link href="#">VIEW PROFILE</Link>
+         <Link href="/member">VIEW PROFILE</Link>
       </Typography>
       </Container>
       <Container sx={{ backgroundColor: "white"}}>
       <Typography variant="subtitle1" gutterBottom>
         MESSAGES GO HERE
         <br></br>
-        <Link href="#"> MESSAGE BOX</Link>
+        <Link href="/messages"> Message Center</Link>
 
 
       </Typography>

@@ -46,7 +46,18 @@ app.prepare().then(() => {
             console.error(err.message);
             res.status(500).send({ error: 'Error registering user' });
           } else {
-            res.send({ message: 'User registered successfully' });
+            db.run(
+              `INSERT INTO userInfo (ID) VALUES (?)`,
+              [username],
+              function (err) {
+                if (err) {
+                  console.error(err.message);
+                  res.status(500).send({ error: 'Error registering user' });
+                } else {
+                  res.send({ message: 'User registered successfully' });
+                }
+              }
+            );
           }
         }
       );
@@ -80,11 +91,10 @@ app.prepare().then(() => {
                   console.error(err.message);
                   res.status(500).send({ error: 'Error ActiveUser Token Insert Fail' });
                 } else {
-                  res.send({ message: 'ActiveUser Token inserted successfully' });
+                 console.log("Login Successful")
                 }
               }
             );   
-           // console.log(token());
             res.send({ message: randomToken });
           } else {
             res.status(401).send({ error: 'Username or password is incorrect' });
@@ -106,7 +116,6 @@ app.prepare().then(() => {
         res.status(500).send({ error: 'Error with Token Search' });
       } else if (!row) {
         console.log("Error...");
-      //  res.send({ message: "Unsuccessful with Authentication..." });
         res.status(401).send({ error: 'Token is incorrect' });
       }else if (row)
       {
@@ -114,28 +123,16 @@ app.prepare().then(() => {
         res.send({ message: "Successfully Authenticated", message1: row.username });
       } 
       else {
-/*         bcrypt.compare(token, row.token, (err, result) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send({ error: 'Cant Find Token' });
-          } else if (result) {
-           console.log("Success...");
-            res.send({ message: "Successfully Authenticated" });
-          } else {
-            console.log("'Username or password is incorrect'")
-            res.status(401).send({ error: 'Username or password is incorrect' });
-          }
-        }); */
         res.status(401).send({ error: 'Token is incorrect' });
       }
     });
   });
   
   server.post('/api/userInfo', (req, res) => {
-    const { token } = req.body;
+    const { token, username } = req.body;
     console.log(token)
     let row2Item = ''
-    db.get(`SELECT * FROM activeUsers WHERE token = ?`, [token], (err, row) => {
+    db.get(`SELECT * FROM activeUsers WHERE username = ?`, [username], (err, row) => {
       if (err) {
         console.error(err.message);
         res.status(500).send({ error: 'Error with Token Search' });
@@ -147,7 +144,7 @@ app.prepare().then(() => {
       }else if (row)
       {
         row2Item = row.username;
-        db.get(`SELECT * FROM userInfo WHERE ID = ?`, [row2Item], (err, row) => {
+        db.get(`SELECT * FROM userInfo WHERE ID = ?`, [username], (err, row) => {
           if (err) {
             console.error(err.message);
             console.log("Error in 500")
@@ -172,34 +169,6 @@ app.prepare().then(() => {
     });
   }); 
 
-
-/*   server.put('/api/EditUserInfo', (req, res) => {
-    console.log(req.body)
-    db.get(`SELECT * FROM userInfo WHERE ID = ?`, [req.body.data1], (err, row) =>  { 
-      if(row)
-    {
-
-      
-    }else if(!row){
-      console.log("No user FOUND")
-      db.run(`INSERT INTO userInfo (ID) VALUES (?)`, [req.body.data1 ], (err) => {
-        if (err) {
-                  console.error(err.message);
-                  console.log("Error in INSERT")
-                  res.status(500).send({ error: 'Error with INSERTING UserInfo' });
-                } else {
-                  console.log("INSERT success...");
-                  res.send({ message: "Successful with INSERTING UserInfo..." });
-                }  
-              });
-    //  res.status(500).send({ error: 'Error with Editing UserInfo' });
-    } });
-
-  });  */
-       
-    
-       
-
   server.put('/api/EditUserInfo', (req, res) => {
     console.log(req.body)
     db.run(`UPDATE userInfo SET AboutMe = ?, AboutHome = ?, AboutPets = ?, PicturesURLs = ?, Services = ?, SizeCanHost = ?, SizeCanWatch = ?, Availability = ?, Address = ?, TypicalTodo = ? WHERE ID = ?`, [req.body.data2, req.body.data3, req.body.data4, req.body.data5, req.body.data6, req.body.data7, req.body.data8, req.body.data9, req.body.data10, req.body.data11, req.body.data1], (err) => {
@@ -214,13 +183,55 @@ app.prepare().then(() => {
     });
   }); 
 
-   
+  server.put('/api/messageSend', async (req, res) => {
+    try {
+      console.log(req.body)
+        const { fromUser, toUser, message, sentAt, status} = req.body;
+        const newMessage = await db.run(
+            `INSERT INTO messages (sender_id, receiver_id, message, sent_at, status) VALUES (?, ?, ?, ?, ?)`,
+            [fromUser ,toUser, message, sentAt, status],
+            function (err) {
+                if (err) {
+                    console.error(err.message);
+                    res.status(500).send({ error: 'Error submitting message' });
+                } else {
+                    res.send({ message: 'Message submitted successfully' });
+                }
+            }
+        );
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Error submitting message' });
+    }
+});
+
+server.put('/api/messageReceive/', async (req, res) => {
+    try {
+      const { toUser } = req.body;
+    //  console.log(req.body)
+        const messages = await db.all(
+            `SELECT * FROM messages WHERE receiver_id = ?`,
+            [toUser],
+            function (err, rows) {
+                if (err) {
+                    console.error(err.message);
+                    res.status(500).send({ error: 'Error fetching messages' });
+                } else {
+                //  console.log(rows)
+                    res.send( rows );
+                }
+            }
+        );
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Error fetching messages' });
+    }
+});
 
   server.post('/api/accountInfo', (req, res) => {
-    const { token } = req.body;
-    console.log(token)
-    let row2Item = ''
-    db.get(`SELECT * FROM activeUsers WHERE token = ?`, [token], (err, row) => {
+    const { token, username } = req.body;
+    console.log(req.body)
+    db.get(`SELECT * FROM activeUsers WHERE username = ?`, [username], (err, row) => {
       if (err) {
         console.error(err.message);
         res.status(500).send({ error: 'Error with Token Search' });
@@ -231,8 +242,7 @@ app.prepare().then(() => {
         res.status(401).send({ error: 'Token is incorrect' });
       }else if (row)
       {
-        row2Item = row.username;
-        db.get(`SELECT * FROM userInfo WHERE ID = ?`, [row2Item], (err, row) => {
+        db.get(`SELECT * FROM userInfo WHERE ID = ?`, [username], (err, row) => {
           if (err) {
             console.error(err.message);
             console.log("Error in 500")
@@ -244,7 +254,6 @@ app.prepare().then(() => {
           }else if (row)
           {
             res.send({ rowID: row.ID, data: row });
-
           } 
           else {
             res.status(401).send({ error: 'Token is incorrect' });

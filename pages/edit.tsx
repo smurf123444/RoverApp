@@ -13,38 +13,7 @@ import BottomNav from "../components/nav/BottomNav";
 import MembersPage from "../components/Members";
 
 
-let userObj: UserInfo = {
-    ID: '',
-    AboutMe: '',
-    AboutHome: '',
-    AboutPets: '',
-    PicturesURLs: '',
-    Services: '',
-    SizeCanHost: 0,
-    SizeCanWatch: 0,
-    Availability: '',
-    Address: '',
-    TypicalTodo: ''
-  };
-  
 
-interface UserInfo {
-    ID: string;
-    AboutMe: string;
-    AboutHome: string;
-    AboutPets: string;
-    PicturesURLs: string;
-    Services: string;
-    SizeCanHost: number;
-    SizeCanWatch: number;
-    Availability: string;
-    Address: string;
-    TypicalTodo: string;
-  }
-
-  function updateUserInfo(info: UserInfo): void {
-
-  }
   let called1 = false;
   let called2 = false;
   let  authenticated = false;
@@ -67,7 +36,7 @@ export default function Edit() {
 
     useEffect(() => {
        let tokenCall = getCookie('Token')
-       setToken(tokenCall);
+       let username = getCookie('Username')
         const handleAuth = async () => {
             try {
            const response = await axios.post<{ message: string }>('http://localhost:3000/api/activeToken', {
@@ -98,8 +67,9 @@ export default function Edit() {
           
 const handleInfo = async () => {
     try {
-   const response = await axios.post<{ rowID: string, data: any }>('http://localhost:3000/api/userInfo', {
-      token: tokenCall
+   const response = await axios.post<{ rowID: string, data: any }>('http://localhost:3000/api/accountInfo', {
+      token: tokenCall,
+      username: username
     });
    // let tits = response.data.rowID.toString()
 
@@ -183,7 +153,31 @@ const handleInfo = async () => {
     }
     return (
         <div>
-            <form onSubmit={handleSubmit}>
+{/*            <form onSubmit={handleSubmit}>
+<input value={userName} onChange={(e) => setUserName(e.target.value)} />
+<input value={aboutMe} onChange={(e) => setAboutMe(e.target.value)} />
+<input value={aboutHome} onChange={(e) => setAboutHome(e.target.value)} />
+<input value={aboutPets} onChange={(e) => setPets(e.target.value)} />
+<input value={picURLS} onChange={(e) => setPicUrls(e.target.value)} />
+<input value={services} onChange={(e) => setServices(e.target.value)} />
+ <input value={sizeCanHost} onChange={(e) => setSizeCanHost(e.target.value)} />
+<input value={sizeCanWatch} onChange={(e) => setSizeCanWatch(e.target.value)} /> 
+<input value={availability} onChange={(e) => setAvailability(e.target.value)} />
+<input value={address} onChange={(e) => setAddress(e.target.value)} />
+<input value={typicalTodo} onChange={(e) => setTypicalTodo(e.target.value)} />
+<button type="submit">Save</button>
+
+
+ <p>
+    {authenticated ? (<h3>Authenticated</h3>):(<h3>NOT Authenticated</h3>)}
+</p> 
+</form>*/}
+            {authenticated ? (
+                <div>
+                    <TopNav />
+
+
+                    <form onSubmit={handleSubmit}>
 <input value={userName} onChange={(e) => setUserName(e.target.value)} />
 <input value={aboutMe} onChange={(e) => setAboutMe(e.target.value)} />
 <input value={aboutHome} onChange={(e) => setAboutHome(e.target.value)} />
@@ -202,12 +196,6 @@ const handleInfo = async () => {
     {authenticated ? (<h3>Authenticated</h3>):(<h3>NOT Authenticated</h3>)}
 </p> */}
 </form>
-            {authenticated ? (
-                <div>
-                    <TopNav />
-
-
-
 
                     <BottomNav />
                 </div>

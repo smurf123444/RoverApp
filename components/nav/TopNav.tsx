@@ -14,19 +14,25 @@ const TopNav = () => {
   spacing={5}
 >
       <Container>
-<Link sx={{color: 'white'}}href="#"> TEST </Link>
+<Link sx={{color: 'white'}}href="/account"> Account </Link>
       </Container>
       <Container>
-<Link sx={{color: 'white'}}href="#"> TEST </Link>
+<Link sx={{color: 'white'}}href="/member"> Member </Link>
       </Container>
       <Container>
-<Link sx={{color: 'white'}}href="#"> TEST </Link>
+<Link sx={{color: 'white'}}href="/edit"> Edit </Link>
       </Container>
       <Container>
-<Link sx={{color: 'white'}}href="#"> TEST </Link>
+<Link sx={{color: 'white'}}href="/messages"> Messages </Link>
       </Container>
       <Container>
-<Link sx={{color: 'white'}}href="#"> TEST </Link>
+<Link sx={{color: 'white'}}href="/login"> Login </Link>
+      </Container>
+      <Container>
+<Link sx={{color: 'white'}}href="/logout"> Logout </Link>
+      </Container>
+      <Container>
+<Link sx={{color: 'white'}}href="/register"> Register </Link>
       </Container>
       </Stack>
 

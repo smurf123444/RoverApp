@@ -1,47 +1,11 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import { useRouter } from 'next/router';
-import {Button, Box, ButtonGroup, Grid, Typography, Stack, Divider, Container} from '@mui/material';
-import sqlite3 from 'sqlite3';
-
 import { getCookie } from 'typescript-cookie';
 import axios from "axios";
 import AccountPage from "../components/Account";
 import TopNav from "../components/nav/TopNav";
 import BottomNav from "../components/nav/BottomNav";
 
-
-let userObj: UserInfo = {
-    ID: '',
-    AboutMe: '',
-    AboutHome: '',
-    AboutPets: '',
-    PicturesURLs: '',
-    Services: '',
-    SizeCanHost: 0,
-    SizeCanWatch: 0,
-    Availability: '',
-    Address: '',
-    TypicalTodo: ''
-  };
-  
-
-interface UserInfo {
-    ID: string;
-    AboutMe: string;
-    AboutHome: string;
-    AboutPets: string;
-    PicturesURLs: string;
-    Services: string;
-    SizeCanHost: number;
-    SizeCanWatch: number;
-    Availability: string;
-    Address: string;
-    TypicalTodo: string;
-  }
-
-  function updateUserInfo(info: UserInfo): void {
-
-  }
   let called1 = false;
   let called2 = false;
 export default function Auth() {
@@ -59,7 +23,9 @@ export default function Auth() {
   let  authenticated = false;
     useEffect(() => {
        let tokenCall = getCookie('Token')
-        const handleAuth = async () => {
+       let userName = getCookie('Username')
+       setUsername(userName);
+    const handleAuth = async () => {
             try {
            const response = await axios.post<{ message: string }>('http://localhost:3000/api/activeToken', {
               token: tokenCall
@@ -88,14 +54,16 @@ export default function Auth() {
 
 const handleInfo = async () => {
     try {
-   const response = await axios.post<{ rowID: string, data: any }>('http://localhost:3000/api/accountInfo', {
-      token: tokenCall
+   const response = await axios.post<{ rowID: string, data: any }>('http://localhost:3000/api/userInfo', {
+      token: tokenCall,
+      username: userName
     });
    // let tits = response.data.rowID.toString()
 
      // console.log(response.data.rowID.toString()) 
        // console.log(response.data.data)
-      setUsername(response.data.rowID.toString());
+       setUsername(response.data.rowID.toString());
+      
       setAvatarUrl(response.data.data.avatarUrl.toString());
       setMessages(
         response.data.data.messages.toString()

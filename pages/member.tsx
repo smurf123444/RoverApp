@@ -64,6 +64,10 @@ export default function Auth() {
   let  authenticated = false;
     useEffect(() => {
        let tokenCall = getCookie('Token')
+       let username = getCookie('Username')
+       setUserName(
+        username
+      );
         const handleAuth = async () => {
             try {
            const response = await axios.post<{ message: string }>('http://localhost:3000/api/activeToken', {
@@ -94,13 +98,13 @@ export default function Auth() {
 const handleInfo = async () => {
     try {
    const response = await axios.post<{ rowID: string, data: any }>('http://localhost:3000/api/userInfo', {
-      token: tokenCall
+      token: tokenCall,
+      username: username
     });
    // let tits = response.data.rowID.toString()
 
      // console.log(response.data.rowID.toString()) 
        // console.log(response.data.data)
-      setAss(response.data.rowID.toString());
      // console.log(response.data.data)
      setUserName(
         response.data.data.ID.toString()
