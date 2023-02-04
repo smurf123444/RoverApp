@@ -74,7 +74,7 @@ const BottomNav = () => {
         TransitionComponent={Fade}
       >
         <MenuItem onClick={handleClose1}>      <Link sx={{color: 'black'}}href="/member"> Listing Page </Link></MenuItem>
-        <MenuItem onClick={handleClose1}>     <Link sx={{color: 'black'}}href="/edit"> Edit </Link></MenuItem>
+        <MenuItem onClick={handleClose1}>     <Link sx={{color: 'black'}}href="/edit"> Edit Listing </Link></MenuItem>
 
       </Menu>
 
