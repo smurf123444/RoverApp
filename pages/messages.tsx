@@ -8,6 +8,7 @@ import TopNav from '../components/nav/TopNav';
 import BottomNav from '../components/nav/BottomNav';
 
 let called = false;
+let username = '';
 const Messages = () => {
     const [toUser, setToUser] = useState('');
     const [inter, setInter] = useState(1);
@@ -48,7 +49,7 @@ useEffect(() => {
                     token: tokenCall,
                     username: userName
                 });
-                setUserName(response.data.data.ID.toString());
+               // setUserName(response.data.data.ID.toString());
                 return response.data.data;
             } catch (error) {
                 return false;
@@ -62,11 +63,11 @@ useEffect(() => {
     }, []); // empty dependency array to run the effect only once on mount
 
 useEffect(() => {
-    const userName = getCookie('Username')
+     username = getCookie('Username')
     const handleMessageRecieve = async () => {
         try {
             const response = await axios.put<any[]>('http://localhost:3000/api/messageReceive/', {
-                toUser: userName,
+                toUser: username,
             });
             setMessages(response.data);
          //   console.log(response.data);
@@ -87,11 +88,12 @@ useEffect(() => {
     }
 
     const handleSubmit = async event => {
+        
         event.preventDefault();
         setIsLoading(true);    // send message to server
         try {
             const response = await axios.put<{ rowID: string, data: any }>('http://localhost:3000/api/messageSend/', {
-                fromUser: userName,
+                fromUser: username,
                 toUser: toUser,
                 message: message,
                 sentAt: '9999-12-31 23:59:59.997',
