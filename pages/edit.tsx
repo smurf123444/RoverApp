@@ -78,7 +78,6 @@ export default function Edit() {
 const handleInfo = async () => {
     try {
    const response = await axios.post<{ rowID: string, data: any }>('http://localhost:3000/api/accountInfo', {
-      token: tokenCall,
       username: username
     });
    // let tits = response.data.rowID.toString()

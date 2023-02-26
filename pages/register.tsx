@@ -3,15 +3,19 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 
 export default function Register() {
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [form, setForm] = React.useState<LoginForm>({ username: '', password: '' })
   const [error, setError] = React.useState('');
   const router = useRouter();
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  interface LoginForm {
+    username: string,
+    password: string,
+  }
+  console.log(form);
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
-      const response = await axios.post('http://localhost:3000/api/register', { username, password });
+      const response = await axios.post('http://localhost:3000/api/register', form);
       console.log(response.data);
       router.push('/login');
     } catch (error) {
@@ -25,15 +29,15 @@ export default function Register() {
       <input
         type="text"
         id="username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={form.username}
+        onChange={(e) => setForm({ ...form, username: e.target.value })}
       />
       <label htmlFor="password">Password</label>
       <input
         type="password"
         id="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        value={form.password}
+        onChange={(e) => setForm({ ...form, password: e.target.value })}
       />
       {error && <p>{error}</p>}
       <button type="submit">Register</button>
