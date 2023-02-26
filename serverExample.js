@@ -9,11 +9,12 @@ const corsOptions = {
   
   app.use(cors(corsOptions));
   
-const config = {
-  user: 'tits',
-  password: '12341234',
-  server: 'MSI',
-  database: 'RoverApp'
+  const config = {
+    user: 'frontend',
+    password: '12341234',
+    server: '192.168.1.235',
+    database: 'RoverApp',
+    port: 1433
 };
 
 app.get('/', async (req, res) => {
