@@ -19,6 +19,7 @@ import MembersPage from "../components/Members";
 export default function Edit() {
     const [token, setToken] = useState('');
     const [userName, setUserName] = useState('');
+    const [listingName, setListingName] = useState('');
     const [aboutMe, setAboutMe] = useState('');
     const [aboutHome, setAboutHome] = useState('');
     const [aboutPets, setPets] = useState('');
@@ -49,7 +50,7 @@ export default function Edit() {
        let username = getCookie('Username')
         const handleAuth = async () => {
             try {
-           const response = await axios.post<{ message: string }>('http://localhost:3000/api/activeToken', {
+           const response = await axios.post<{ message: string }>('http://192.168.4.45:3000/api/activeToken', {
               token: tokenCall
             });
             let responseString = response.data.message.toString()
@@ -77,7 +78,7 @@ export default function Edit() {
           
 const handleInfo = async () => {
     try {
-   const response = await axios.post<{ rowID: string, data: any }>('http://localhost:3000/api/accountInfo', {
+   const response = await axios.post<{ rowID: string, data: any }>('http://192.168.4.45:3000/api/accountInfo', {
       username: username
     });
    // let tits = response.data.rowID.toString()
@@ -86,7 +87,10 @@ const handleInfo = async () => {
        // console.log(response.data.data)
      // console.log(response.data.data)
      setUserName(
-        response.data.data.ID.toString()
+        response.data.data.username.toString()
+      );
+      setListingName(
+        response.data.data.listingName.toString()
       );
       setAboutMe(
         response.data.data.AboutMe.toString()
@@ -140,9 +144,10 @@ const handleInfo = async () => {
 /*         console.log(userName);
         console.log(token); */
         try {
-            const request = axios.put<{ rowID: string, data: any }>('http://localhost:3000/api/EditUserInfo', {
+            const request = axios.put<{ rowID: string, data: any }>('http://192.168.4.45:3000/api/EditUserInfo', {
                 token: token,
-                data1: userName,
+                data12: userName,
+                data1:listingName,
                 data2: aboutMe,
                 data3: aboutHome,
                 data4: aboutPets,
@@ -162,68 +167,6 @@ const handleInfo = async () => {
     }
 
 
-    const Form = ({ classes, handleSubmit, userName, setUserName, aboutMe, setAboutMe, aboutHome, setAboutHome, aboutPets, setPets, picURLS, setPicUrls, services, setServices, sizeCanHost, setSizeCanHost, sizeCanWatch, setSizeCanWatch, availability, setAvailability, address, setAddress, typicalTodo, setTypicalTodo }) => (
-      <form className={classes.form} onSubmit={handleSubmit}>
-        <TextField
-          label="Username"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-        />
-        <TextField
-          label="About Me"
-          value={aboutMe}
-          onChange={(e) => setAboutMe(e.target.value)}
-        />
-        <TextField
-          label="About Home"
-          value={aboutHome}
-          onChange={(e) => setAboutHome(e.target.value)}
-        />
-        <TextField
-          label="About Pets"
-          value={aboutPets}
-          onChange={(e) => setPets(e.target.value)}
-        />
-        <TextField
-          label="Picture URLs"
-          value={picURLS}
-          onChange={(e) => setPicUrls(e.target.value)}
-        />
-        <TextField
-          label="Services"
-          value={services}
-          onChange={(e) => setServices(e.target.value)}
-        />
-        <TextField
-          label="Size Can Host"
-          value={sizeCanHost}
-          onChange={(e) => setSizeCanHost(e.target.value)}
-        />
-        <TextField
-          label="Size Can Watch"
-          value={sizeCanWatch}
-          onChange={(e) => setSizeCanWatch(e.target.value)}
-        />
-        <TextField
-          label="Availability"
-          value={availability}
-          onChange={(e) => setAvailability(e.target.value)}
-        />
-        <TextField
-          label="Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <TextField
-          label="Typical Todo"
-          value={typicalTodo}
-          onChange={(e) => setTypicalTodo(e.target.value)}
-        />
-        <Button type="submit" variant="contained">
-          Save
-        </Button>
-      </form>
-    );
   
 
 
@@ -262,12 +205,12 @@ Edit Profile
            margin="normal"
            required
            fullWidth
-           id="username"
-           label="Username"
-           name="username"
-           autoComplete="username"
-           value={userName}
-           onChange={(e) => setUserName(e.target.value)}
+           id="listingName"
+           label="Listing Name"
+           name="listingName"
+           autoComplete="listingName"
+           value={listingName}
+           onChange={(e) => setListingName(e.target.value)}
          />
 <TextField
            variant="outlined"

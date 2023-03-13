@@ -27,7 +27,7 @@ export default function Auth() {
        setUsername(userName);
     const handleAuth = async () => {
             try {
-           const response = await axios.post<{ message: string }>('http://localhost:3000/api/activeToken', {
+           const response = await axios.post<{ message: string }>('http://192.168.4.45:3000/api/activeToken', {
               token: tokenCall
             });
             let responseString = response.data.message.toString()
@@ -54,7 +54,7 @@ export default function Auth() {
 
 const handleInfo = async () => {
     try {
-   const response = await axios.post<{ rowID: string, data: any }>('http://localhost:3000/api/userInfo', {
+   const response = await axios.post<{ rowID: string, data: any }>('http://192.168.4.45:3000/api/userInfo', {
       token: tokenCall,
       username: userName
     });

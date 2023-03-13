@@ -15,8 +15,9 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log(form)
     try {
-      const response = await axios.post<{ message: string }>('http://localhost:3000/api/login', form)
+      const response = await axios.post<{ message: string }>('http://192.168.4.45:3000/api/login', form)
      // console.log(response.data)
       let responseString = response.data.message.toString()
       setCookie('Token', responseString, { expires: 7 })
