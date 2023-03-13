@@ -15,7 +15,7 @@ export default function Register() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3000/api/register', form);
+      const response = await axios.post('http://192.168.4.45:3000/api/register', form);
       console.log(response.data);
       router.push('/login');
     } catch (error) {

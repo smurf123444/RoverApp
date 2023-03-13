@@ -48,6 +48,7 @@ interface UserInfo {
 export default function Auth() {
     const [ass, setAss] = useState('');
     const [userName, setUserName] = useState('');
+    const [listingName, setListingName] = useState('');
     const [aboutMe, setAboutMe] = useState('');
     const [aboutHome, setAboutHome] = useState('');
     const [aboutPets, setPets] = useState('');
@@ -70,7 +71,7 @@ export default function Auth() {
       );
         const handleAuth = async () => {
             try {
-           const response = await axios.post<{ message: string }>('http://localhost:3000/api/activeToken', {
+           const response = await axios.post<{ message: string }>('http://192.168.4.45:3000/api/activeToken', {
               token: tokenCall
             });
             let responseString = response.data.message.toString()
@@ -97,7 +98,7 @@ export default function Auth() {
 
 const handleInfo = async () => {
     try {
-   const response = await axios.post<{ rowID: string, data: any }>('http://localhost:3000/api/accountInfo', {
+   const response = await axios.post<{ rowID: string, data: any }>('http://192.168.4.45:3000/api/accountInfo', {
       token: tokenCall,
       username: username
     });
@@ -107,7 +108,10 @@ const handleInfo = async () => {
        // console.log(response.data.data)
      // console.log(response.data.data)
      setUserName(
-        response.data.data.ID.toString()
+        response.data.data.username.toString()
+      );
+      setListingName(
+        response.data.data.listingName.toString()
       );
       setAboutMe(
         response.data.data.AboutMe.toString()
@@ -165,6 +169,7 @@ const handleInfo = async () => {
 
 <MembersPage 
     ID= {userName}
+    listingName= {listingName}
     AboutMe= {aboutMe}
     AboutHome= {aboutHome}
     AboutPets= {aboutPets}

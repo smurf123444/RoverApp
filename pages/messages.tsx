@@ -27,7 +27,7 @@ useEffect(() => {
         // check if the token is valid
         const handleAuth = async () => {
             try {
-                const response = await axios.post('http://localhost:3000/api/activeToken', {
+                const response = await axios.post('http://192.168.4.45:3000/api/activeToken', {
                     token: tokenCall
                 });
                 if (response.data.message === 'Successfully Authenticated') {
@@ -45,7 +45,7 @@ useEffect(() => {
         // get user info
         const handleInfo = async () => {
             try {
-                const response = await axios.post('http://localhost:3000/api/userInfo', {
+                const response = await axios.post('http://192.168.4.45:3000/api/userInfo', {
                     token: tokenCall,
                     username: userName
                 });
@@ -66,7 +66,7 @@ useEffect(() => {
      username = getCookie('Username')
     const handleMessageRecieve = async () => {
         try {
-            const response = await axios.put<any[]>('http://localhost:3000/api/messageReceive/', {
+            const response = await axios.put<any[]>('http://192.168.4.45:3000/api/messageReceive/', {
                 toUser: username,
             });
             setMessages(response.data);
@@ -92,7 +92,7 @@ useEffect(() => {
         event.preventDefault();
         setIsLoading(true);    // send message to server
         try {
-            const response = await axios.put<{ rowID: string, data: any }>('http://localhost:3000/api/messageSend/', {
+            const response = await axios.put<{ rowID: string, data: any }>('http://192.168.4.45:3000/api/messageSend/', {
                 fromUser: username,
                 toUser: toUser,
                 message: message,

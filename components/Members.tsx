@@ -1,6 +1,7 @@
 import {Button, Box, ButtonGroup, Grid, Typography, Stack, Divider, Container, Link, Avatar, Toolbar, IconButton} from '@mui/material';
 interface UserProps {
   ID: string;
+  listingName: string;
   AboutMe: string;
   AboutHome: string;
   AboutPets: string;
@@ -14,7 +15,7 @@ interface UserProps {
 }
 const MembersPage: React.FC<UserProps> = (props) => {
   // Use the props in the component
-  const { ID, AboutMe, AboutHome, AboutPets, PicturesURLs, Services, SizeCanHost, SizeCanWatch, Availability, Address, TypicalTodo } = props;
+  const { ID, listingName, AboutMe, AboutHome, AboutPets, PicturesURLs, Services, SizeCanHost, SizeCanWatch, Availability, Address, TypicalTodo } = props;
   console.log(props)
   return (
     <div className="flex flex-col lg:flex-row space-x-2 text-neutral">
@@ -38,6 +39,14 @@ const MembersPage: React.FC<UserProps> = (props) => {
          {props.ID}
 
       </Typography>
+      <Container sx={{ backgroundColor: "tan"}}>
+      <Typography variant="subtitle1" gutterBottom>
+        Listing Name: 
+      </Typography>
+      <Typography variant="subtitle1" gutterBottom>
+        {listingName}
+      </Typography>
+      </Container>
 
       <Container sx={{ backgroundColor: "tan"}}>
       <Typography variant="subtitle1" gutterBottom>
