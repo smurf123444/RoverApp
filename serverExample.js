@@ -5,9 +5,10 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const corsOptions = {
-    origin: 'http://localhost:3001',
-    optionsSuccessStatus: 200
-  };
+  origin: '*', // allow requests from any origin
+  optionsSuccessStatus: 200
+};
+
   
   app.use(cors(corsOptions));
   
@@ -102,18 +103,19 @@ app.post('/api/register', async (req, res) => {
 app.put('/api/EditUserInfo', (req, res) => {
   console.log(req.body);
   new sql.Request()
+    .input('data1', sql.VarChar, req.body.data1)
     .input('data2', sql.VarChar, req.body.data2)
     .input('data3', sql.VarChar, req.body.data3)
     .input('data4', sql.VarChar, req.body.data4)
     .input('data5', sql.VarChar, req.body.data5)
     .input('data6', sql.VarChar, req.body.data6)
-    .input('data7', sql.Int, req.body.data7)
-    .input('data8', sql.Int, req.body.data8)
+    .input('data7', sql.VarChar, req.body.data7)
+    .input('data8', sql.VarChar, req.body.data8)
     .input('data9', sql.VarChar, req.body.data9)
     .input('data10', sql.VarChar, req.body.data10)
     .input('data11', sql.VarChar, req.body.data11)
-    .input('data1', sql.Int, req.body.data1)
-    .query(`UPDATE userInfo SET AboutMe = @data2, AboutHome = @data3, AboutPets = @data4, PicturesURLs = @data5, Services = @data6, SizeCanHost = @data7, SizeCanWatch = @data8, Availability = @data9, Address = @data10, TypicalTodo = @data11 WHERE ID = @data1`, (err) => {
+    .input('data12', sql.VarChar, req.body.data12)
+    .query(`UPDATE userInfo SET listingName = @data1, AboutMe = @data2, AboutHome = @data3, AboutPets = @data4, PicturesURLs = @data5, Services = @data6, SizeCanHost = @data7, SizeCanWatch = @data8, Availability = @data9, Address = @data10, TypicalTodo = @data11 WHERE username = @data12`, (err) => {
       if (err) {
         console.error(err);
         console.log('Error in UPDATE');
@@ -168,8 +170,8 @@ app.post('/api/accountInfo', async (req, res) => {
   try {
     const pool = await sql.connect(config);
       const userInfoResult = await pool.request()
-        .input('ID', sql.NVarChar, username)
-        .query(`SELECT * FROM userInfo WHERE ID  = @ID`);
+        .input('username', sql.NVarChar, username)
+        .query(`SELECT * FROM userInfo WHERE username  = @username`);
       
       if (!userInfoResult.recordset[0]) {
         console.log("Error...");
