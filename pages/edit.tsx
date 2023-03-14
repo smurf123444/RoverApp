@@ -3,13 +3,10 @@
 import React, {useEffect, useState} from "react";
 import { useRouter } from 'next/router';
 import {Button, Box, Typography, Container, TextField, createStyles} from '@mui/material';
-
 import { getCookie } from 'typescript-cookie';
 import axios from "axios";
 import TopNav from "../components/nav/TopNav";
 import BottomNav from "../components/nav/BottomNav";
-
-
 
   let called1 = false;
   let called2 = false;

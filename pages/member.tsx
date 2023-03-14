@@ -1,48 +1,14 @@
 import React, {useEffect, useState} from "react";
 import { useRouter } from 'next/router';
 import {Button, Box, ButtonGroup, Grid, Typography, Stack, Divider, Container} from '@mui/material';
-import sqlite3 from 'sqlite3';
 
 import { getCookie } from 'typescript-cookie';
 import axios from "axios";
-import AccountPage from "../components/Account";
 import TopNav from "../components/nav/TopNav";
 import BottomNav from "../components/nav/BottomNav";
 import MembersPage from "../components/Members";
 
 
-let userObj: UserInfo = {
-    ID: '',
-    AboutMe: '',
-    AboutHome: '',
-    AboutPets: '',
-    PicturesURLs: '',
-    Services: '',
-    SizeCanHost: 0,
-    SizeCanWatch: 0,
-    Availability: '',
-    Address: '',
-    TypicalTodo: ''
-  };
-  
-
-interface UserInfo {
-    ID: string;
-    AboutMe: string;
-    AboutHome: string;
-    AboutPets: string;
-    PicturesURLs: string;
-    Services: string;
-    SizeCanHost: number;
-    SizeCanWatch: number;
-    Availability: string;
-    Address: string;
-    TypicalTodo: string;
-  }
-
-  function updateUserInfo(info: UserInfo): void {
-
-  }
   let called1 = false;
   let called2 = false;
 export default function Auth() {
@@ -75,9 +41,6 @@ export default function Auth() {
               token: tokenCall
             });
             let responseString = response.data.message.toString()
-            //let responseString1 = response.data.toString()
-            //  console.log(responseString)
-             // console.log(responseString1)
           if (responseString = 'Successfully Authenticated')
           {
             authenticated = true;
@@ -102,11 +65,6 @@ const handleInfo = async () => {
       token: tokenCall,
       username: username
     });
-   // let tits = response.data.rowID.toString()
-
-     // console.log(response.data.rowID.toString()) 
-       // console.log(response.data.data)
-     // console.log(response.data.data)
      setUserName(
         response.data.data.username.toString()
       );
@@ -165,8 +123,6 @@ const handleInfo = async () => {
         <div>
         <TopNav/>
         <br></br>
-        
-
 <MembersPage 
     ID= {userName}
     listingName= {listingName}
@@ -181,7 +137,6 @@ const handleInfo = async () => {
     Address= {address}
     TypicalTodo= {typicalTodo}
     />
-
         <br></br>
         <BottomNav/>
         </div>
