@@ -127,6 +127,22 @@ app.put('/api/EditUserInfo', (req, res) => {
     });
 });
 
+app.post('/api/ListingSearch', async (req, res) => {
+  const { listingName } = req.body;
+
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('SearchTerm', sql.NVarChar(50), listingName)
+      .execute('SearchListings');
+
+    res.json(result.recordset);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
 
 app.put('/api/messageSend', async (req, res) => {
   try {
