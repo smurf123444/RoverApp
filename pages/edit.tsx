@@ -2,14 +2,12 @@
 
 import React, {useEffect, useState} from "react";
 import { useRouter } from 'next/router';
-import {Button, Box, ButtonGroup, Grid, Typography, Stack, Divider, Container, TextField, withStyles, createStyles} from '@mui/material';
+import {Button, Box, Typography, Container, TextField, createStyles} from '@mui/material';
 
 import { getCookie } from 'typescript-cookie';
 import axios from "axios";
-import AccountPage from "../components/Account";
 import TopNav from "../components/nav/TopNav";
 import BottomNav from "../components/nav/BottomNav";
-import MembersPage from "../components/Members";
 
 
 
@@ -172,25 +170,6 @@ const handleInfo = async () => {
 
     return (
         <div>
-{/*            <form onSubmit={handleSubmit}>
-<input value={userName} onChange={(e) => setUserName(e.target.value)} />
-<input value={aboutMe} onChange={(e) => setAboutMe(e.target.value)} />
-<input value={aboutHome} onChange={(e) => setAboutHome(e.target.value)} />
-<input value={aboutPets} onChange={(e) => setPets(e.target.value)} />
-<input value={picURLS} onChange={(e) => setPicUrls(e.target.value)} />
-<input value={services} onChange={(e) => setServices(e.target.value)} />
- <input value={sizeCanHost} onChange={(e) => setSizeCanHost(e.target.value)} />
-<input value={sizeCanWatch} onChange={(e) => setSizeCanWatch(e.target.value)} /> 
-<input value={availability} onChange={(e) => setAvailability(e.target.value)} />
-<input value={address} onChange={(e) => setAddress(e.target.value)} />
-<input value={typicalTodo} onChange={(e) => setTypicalTodo(e.target.value)} />
-<button type="submit">Save</button>
-
-
- <p>
-    {authenticated ? (<h3>Authenticated</h3>):(<h3>NOT Authenticated</h3>)}
-</p> 
-</form>*/}
             {authenticated ? (
               <div>
 <TopNav />

@@ -11,18 +11,16 @@ let called = false;
 let username = '';
 const Messages = () => {
     const [toUser, setToUser] = useState('');
-    const [inter, setInter] = useState(1);
     const [message, setMessage] = useState('');
-    const [token, setToken] = useState('');
+
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [userName, setUserName] = useState('');
     const router = useRouter();
 
 useEffect(() => {
         // get the token from cookie
         const tokenCall = getCookie('Token');
-        setToken(tokenCall);
+
         const userName = getCookie('Username')
         // check if the token is valid
         const handleAuth = async () => {
