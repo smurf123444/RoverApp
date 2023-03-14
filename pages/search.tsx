@@ -12,6 +12,8 @@ import {   Box,
     TextField} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
+import TopNav from "../components/nav/TopNav";
+import BottomNav from "../components/nav/BottomNav";
 
 const SearchContainer = styled('div')({
   display: 'flex',
@@ -67,7 +69,9 @@ const SearchPage = () => {
   };
 
   return (
+ 
     <SearchContainer>
+           <TopNav />
       <Typography variant="h4">Search for Listings</Typography>
       <SearchForm onSubmit={handleSubmit}>
         <TextField
@@ -137,6 +141,7 @@ const SearchPage = () => {
           ))}
         </SearchResultList>
       )}
+      <BottomNav />
     </SearchContainer>
   );
 };

@@ -20,8 +20,11 @@ export default function Login() {
       const response = await axios.post<{ message: string }>('http://192.168.4.45:3000/api/login', form)
      // console.log(response.data)
       let responseString = response.data.message.toString()
+      let responseString1 = response.data.message1.toString();
+      console.log(responseString1);
       setCookie('Token', responseString, { expires: 7 })
       setCookie('Username', form.username, { expires: 7 });
+      setCookie('ID', responseString1, { expires: 7 });
       router.push('/account')
     } catch (error) {
       setError(error.response.data.error)

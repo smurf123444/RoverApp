@@ -25,18 +25,7 @@ export default function Edit() {
     const [availability, setAvailability] = useState('');
     const [address, setAddress] = useState('');
     const [typicalTodo, setTypicalTodo] = useState('');
-    const styles = theme =>
-    createStyles({
-      form: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        '& > *': {
-          margin: theme.spacing(1),
-          width: '25ch',
-        },
-      },
-    });
+
 
     const router = useRouter()
 

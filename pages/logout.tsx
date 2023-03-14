@@ -9,6 +9,7 @@ export default function Logout() {
   useEffect(() => {
     removeCookie('Username')
     removeCookie('Token')
+    removeCookie('ID')
     router.push('/login')
 }, [])
 

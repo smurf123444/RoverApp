@@ -11,6 +11,7 @@ let username = '';
 const Messages = () => {
     const [toUser, setToUser] = useState('');
     const [message, setMessage] = useState('');
+
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
@@ -18,6 +19,7 @@ const Messages = () => {
 useEffect(() => {
         // get the token from cookie
         const tokenCall = getCookie('Token');
+
         const userName = getCookie('Username')
         // check if the token is valid
         const handleAuth = async () => {
@@ -34,7 +36,9 @@ useEffect(() => {
                 return false;
             }
         }
+
         handleAuth();
+
         // get user info
         const handleInfo = async () => {
             try {
@@ -49,7 +53,10 @@ useEffect(() => {
             }
         }
         handleInfo();
+
         // handle message recieve
+
+
     }, []); // empty dependency array to run the effect only once on mount
 
 useEffect(() => {
@@ -70,12 +77,12 @@ useEffect(() => {
     //set up refresh button.
 }, [])
 
-    const handleChangeMessage = event => {
-        setMessage(event.target.value);
-    }
-    const handleChangeToUser = event => {
-        setToUser(event.target.value);
-    }
+            const handleChangeMessage = event => {
+                setMessage(event.target.value);
+            }
+            const handleChangeToUser = event => {
+                setToUser(event.target.value);
+            }
 
     const handleSubmit = async event => {
         
@@ -89,8 +96,11 @@ useEffect(() => {
                 sentAt: '9999-12-31 23:59:59.997',
                 status: 'delivered'
             });
+    
             // reset the message field and toUser field
             setMessage('');
+
+    
             // update the message list with the new message
             setMessages([...messages, response.data]);
         } catch (error) {
