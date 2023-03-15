@@ -57,6 +57,8 @@ app.post('/api/register', async (req, res) => {
         res.status(401).send({ error: 'Username or password is incorrect' });
       } else {
         const row = result.recordset[0];
+        console.log(result.recordset[0].id);
+        const id = result.recordset[0].id;
         const isMatch = await bcrypt.compare(password, row.password);
       
         if (isMatch) {
@@ -67,7 +69,7 @@ app.post('/api/register', async (req, res) => {
               `INSERT INTO activeUsers (username, token) VALUES (@username, @token)`
             );
       
-          res.send({ message: randomToken });
+          res.send({ message: randomToken, message1: id});
         } else {
           res.status(401).send({ error: 'Username or password is incorrect' });
         }
@@ -144,16 +146,17 @@ app.post('/api/ListingSearch', async (req, res) => {
 });
 
 
-app.put('/api/messageSend', async (req, res) => {
+/* app.put('/api/messageSend', async (req, res) => {
   try {
     console.log(req.body);
     const { fromUser, toUser, message, sentAt, status } = req.body;
-    const newMessage = await new mssql.Request()
-      .input('fromUser', mssql.NVarChar, fromUser)
-      .input('toUser', mssql.NVarChar, toUser)
-      .input('message', mssql.NVarChar, message)
-      .input('sentAt', mssql.DateTime, sentAt)
-      .input('status', mssql.NVarChar, status)
+    const pool = await sql.connect(config);
+    const newMessage = await pool.request()
+      .input('fromUser', sql.NVarChar, fromUser)
+      .input('toUser', sql.NVarChar, toUser)
+      .input('message', sql.NVarChar, message)
+      .input('sentAt', sql.DateTime, sentAt)
+      .input('status', sql.NVarChar, status)
       .query(
         `INSERT INTO messages (sender_id, receiver_id, message, sent_at, status)
         VALUES (@fromUser, @toUser, @message, @sentAt, @status)`
@@ -163,20 +166,42 @@ app.put('/api/messageSend', async (req, res) => {
     console.error(error);
     res.status(500).send({ error: 'Error submitting message' });
   }
+}); */
+
+app.put('/api/messageSend', async (req, res) => {
+  try {
+    console.log(req.body);
+    const { fromUser, toUser, message } = req.body;
+    const pool = await sql.connect(config);
+    const newMessage = await pool.request()
+      .input('sender_username', sql.NVarChar, fromUser)
+      .input('receiver_username', sql.NVarChar, toUser)
+      .input('message', sql.NVarChar, message)
+      .execute('insert_message');
+    res.send({ message: 'Message submitted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Error submitting message' });
+  }
 });
+
+
 
 
 app.put('/api/messageReceive/', async (req, res) => {
   try {
     const { toUser } = req.body;
-    const sql = "SELECT * FROM messages WHERE receiver_id = @toUser";
-    const result = await new mssql.Request().input("toUser", mssql.NVarChar, toUser).query(sql);
+    const pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('receiver_username', sql.NVarChar, toUser)
+      .execute('select_messages'); // Call the stored procedure
     res.send(result.recordset);
   } catch (error) {
       console.error(error);
       res.status(500).send({ error: 'Error fetching messages' });
   }
 });
+
 
 
 app.post('/api/accountInfo', async (req, res) => {
