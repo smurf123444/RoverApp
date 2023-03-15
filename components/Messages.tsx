@@ -1,30 +1,26 @@
+import { Box, List, ListItem, ListItemText, Typography } from "@mui/material";
+
 function MessageList({ messages }) {
-    console.log(messages)
-    return (
-      <div 
-        style={{
-          maxHeight: "600px",
-          overflowY: "auto",
-          padding: "10px",
-          display: "flex",
-          flexDirection: "column"
-        }}
-      >
+  return (
+    <Box sx={{ maxHeight: "600px", overflowY: "auto", p: 2 }}>
+      <List sx={{ display: "flex", flexDirection: "column" }}>
         {messages.map((message, index) => (
-          <div key={index} style={{ display: "flex", flexDirection: "row" }}>
-            <div style={{ flex: 1 }}>
-              <h4>From:</h4>
-              <p>{message.sender_id}</p>
-            </div>
-            <div style={{ flex: 2 }}>
-              <h3>Message:</h3>
-              <p>{message.message}</p>
-            </div>
-          </div>
+          <ListItem key={index} sx={{ flexDirection: "column", alignItems: "flex-start" }}>
+            <ListItemText
+              primary={
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  From: {message.from_text}
+                </Typography>
+              }
+              secondary={
+                <Typography variant="body1">{message.message}</Typography>
+              }
+            />
+          </ListItem>
         ))}
-      </div>
-    );
-  }
-  
-  export default MessageList;
-  
+      </List>
+    </Box>
+  );
+}
+
+export default MessageList;

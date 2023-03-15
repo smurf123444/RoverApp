@@ -66,6 +66,7 @@ useEffect(() => {
             const response = await axios.put<any[]>('http://192.168.4.45:3000/api/messageReceive/', {
                 toUser: username,
             });
+            console.log(response)
             setMessages(response.data);
          //   console.log(response.data);
         } catch (error) {
@@ -93,8 +94,6 @@ useEffect(() => {
                 fromUser: username,
                 toUser: toUser,
                 message: message,
-                sentAt: '9999-12-31 23:59:59.997',
-                status: 'delivered'
             });
     
             // reset the message field and toUser field
