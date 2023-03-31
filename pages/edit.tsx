@@ -14,6 +14,7 @@ import BottomNav from "../components/nav/BottomNav";
 export default function Edit() {
     const [token, setToken] = useState('');
     const [userName, setUserName] = useState('');
+    const [accountType, setAccountType] = useState('');
     const [listingName, setListingName] = useState('');
     const [aboutMe, setAboutMe] = useState('');
     const [aboutHome, setAboutHome] = useState('');
@@ -32,6 +33,8 @@ export default function Edit() {
     useEffect(() => {
        let tokenCall = getCookie('Token')
        let username = getCookie('Username')
+       let accountType = getCookie('AccountType')
+       setAccountType(accountType)
         const handleAuth = async () => {
             try {
            const response = await axios.post<{ message: string }>('http://192.168.4.45:3000/api/activeToken', {
@@ -158,7 +161,7 @@ const handleInfo = async () => {
         <div>
             {authenticated ? (
               <div>
-<TopNav />
+<TopNav accountType={accountType}/>
 <Container maxWidth="sm">
 <Box mt={8}>
 <Typography component="h1" variant="h5">
@@ -302,7 +305,7 @@ Update
 </div>
             ) : (
                     <div>
-                        <TopNav />
+                        <TopNav accountType={accountType}/>
                        {/*  <AccountPage /> */}
                         <BottomNav />
                     </div>

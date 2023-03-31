@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {   Box,
     Button,
     Paper,
@@ -14,6 +14,7 @@ import { styled } from '@mui/material/styles';
 import axios from 'axios';
 import TopNav from "../components/nav/TopNav";
 import BottomNav from "../components/nav/BottomNav";
+import { getCookie } from 'typescript-cookie';
 
 const SearchContainer = styled('div')({
   display: 'flex',
@@ -50,6 +51,12 @@ const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
+  const [accountType, setAccountType] = useState('');
+
+  useEffect (() => {
+    let accountType = getCookie('AccountType')
+    setAccountType(accountType)
+  }, [])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -71,7 +78,7 @@ const SearchPage = () => {
   return (
  
     <SearchContainer>
-           <TopNav />
+           <TopNav accountType={accountType}/>
       <Typography variant="h4">Search for Listings</Typography>
       <SearchForm onSubmit={handleSubmit}>
         <TextField

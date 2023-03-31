@@ -11,7 +11,7 @@ let username = '';
 const Messages = () => {
     const [toUser, setToUser] = useState('');
     const [message, setMessage] = useState('');
-
+    const [accountType, setAccountType] = useState('');
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
@@ -19,8 +19,9 @@ const Messages = () => {
 useEffect(() => {
         // get the token from cookie
         const tokenCall = getCookie('Token');
-
+        const accountType = getCookie('AccountType')
         const userName = getCookie('Username')
+        setAccountType(accountType)
         // check if the token is valid
         const handleAuth = async () => {
             try {
@@ -111,7 +112,7 @@ useEffect(() => {
 
     return (
         <Container>
-            <TopNav />
+            <TopNav accountType={accountType}/>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Typography variant="h4" align="center">Messages</Typography>

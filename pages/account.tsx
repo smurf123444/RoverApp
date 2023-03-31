@@ -8,9 +8,10 @@ import BottomNav from "../components/nav/BottomNav";
 
   let called1 = false;
   let called2 = false;
-  
+  let accountType = 0;
 export default function Auth() {
     const [username, setUsername] = useState('');
+    const [accountType, setAccountType] = useState(null);
     const [avatarUrl, setAvatarUrl] = useState('');
     const [messages, setMessages] = useState('');
     const [balance, setBalance] = useState('');
@@ -25,6 +26,8 @@ export default function Auth() {
   useEffect(() => {
     let tokenCall = getCookie('Token')
     let userName = getCookie('Username')
+    let accountType = getCookie('AccountType')
+    setAccountType(accountType)
     setUsername(userName);
     const handleAuth = async () => {
       try {
@@ -46,35 +49,12 @@ export default function Auth() {
     handleAuth();
           called1 = true;
   }
-const handleInfo = async () => {
-    try {
-   const response = await axios.post<{ rowID: string, data: any }>('http://192.168.4.45:3000/api/userInfo', {
-      token: tokenCall,
-      username: userName
-    });
-      setUsername(response.data.rowID.toString());
-      setAvatarUrl(response.data.data.avatarUrl.toString());
-      setMessages(response.data.data.messages.toString())
-      setBalance(response.data.data.balance.toString())
-      setSitterResources(response.data.data.sitterResources.toString())
-      setPromoCode(response.data.data.promoCode.toString())
-      setRefCode(response.data.data.referralCode.toString())
-      setPets(response.data.data.pets)
-          return(response.data.data)
-    } catch (error) {
-      return ( false )
-    }
-  }
-  if(called2 == false)
-  {
-    handleInfo();
-    called2 = true;
-  }});
+});
   if(authenticated = true)
   {
     return (
 <div>
-  <TopNav />
+  <TopNav accountType={accountType}/>
   <br />
   <AccountPage
     username={username}

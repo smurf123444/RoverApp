@@ -14,6 +14,7 @@ import MembersPage from "../components/Members";
 export default function Auth() {
     const [ass, setAss] = useState('');
     const [userName, setUserName] = useState('');
+    const [accountType, setAccountType] = useState('');
     const [listingName, setListingName] = useState('');
     const [aboutMe, setAboutMe] = useState('');
     const [aboutHome, setAboutHome] = useState('');
@@ -32,6 +33,8 @@ export default function Auth() {
     useEffect(() => {
        let tokenCall = getCookie('Token')
        let username = getCookie('Username')
+       const accountType = getCookie('AccountType')
+       setAccountType(accountType)
        setUserName(
         username
       );
@@ -121,7 +124,7 @@ const handleInfo = async () => {
   {
     return (
         <div>
-        <TopNav/>
+        <TopNav accountType={accountType}/>
         <br></br>
 <MembersPage 
     ID= {userName}

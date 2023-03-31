@@ -1,12 +1,15 @@
 import {Typography, AppBar, Toolbar, Stack, Divider, Container, Link, Button, Menu, MenuItem, Fade} from '@mui/material';
 import * as React from 'react';
-const TopNav = () => {
-
+const TopNav = (props) => {
+const {accountType} = props
+console.log("PROPS: "+ accountType)
       const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
       const [anchorEl1, setAnchorEl1] = React.useState<null | HTMLElement>(null);
 
       const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
+
+
       const open = Boolean(anchorEl);
       const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -124,6 +127,29 @@ const TopNav = () => {
             <MenuItem onClick={handleClose}><Link sx={{color: 'white', marginLeft: '10%'}}href="/logout"> Logout </Link></MenuItem>
             <MenuItem onClick={handleClose}><Link sx={{color: 'white',  marginLeft: '10%'}}href="/register"> Register </Link></MenuItem>
       </Container>
+      <Container>
+      {accountType === '2' ? (
+              <MenuItem onClick={handleClose}>
+                <Link sx={{ color: "white", marginLeft: "10%" }} href="/admin">
+                  Admin Panel
+                </Link>
+              </MenuItem>
+            ) : (
+              <div>Some other content here</div>
+            )}
+
+
+      <MenuItem onClick={handleClose}>
+        <Link sx={{ color: "white", marginLeft: "10%" }} href="/profile">
+          Profile
+        </Link>
+      </MenuItem>
+      <MenuItem onClick={handleClose}>
+        <Link sx={{ color: "white", marginLeft: "10%" }} href="/settings">
+          Settings
+        </Link>
+      </MenuItem>
+    </Container>
   </Toolbar>
 </AppBar>
 
