@@ -18,12 +18,22 @@ export default function Login() {
     e.preventDefault()
     console.log(form)
     try {
-      const response = await axios.post<{ message: string }>('http://192.168.4.45:3000/api/login', form)
-     // console.log(response.data)
-      let responseString = response.data.message.toString()
-      setCookie('Token', responseString, { expires: 7 })
-      setCookie('Username', form.username, { expires: 7 });
-      router.push('/account')
+        // After successful login
+        const response = await axios.post<{ message: string, accountType: number }>('http://192.168.4.45:3000/api/login', form)
+        let responseString = response.data.message.toString()
+
+        // Store the account type in a cookie
+        setCookie('Token', responseString, { expires: 7 })
+        setCookie('Username', form.username, { expires: 7 });
+        setCookie('AccountType', response.data.accountType, { expires: 7 });
+
+        // Redirect to the appropriate page based on account type
+        if (response.data.accountType === 1) {
+          router.push('/member')
+        } else if (response.data.accountType === 2) {
+          router.push('/account')
+        }
+
     } catch (error) {
       setError(error.response.data.error)
     }

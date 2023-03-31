@@ -47,38 +47,39 @@ app.post('/api/register', async (req, res) => {
   app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
     const randomToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    
+      
     try {
-    const pool = await sql.connect(config);
-    const result = await pool.request()
-    .input('username', sql.VarChar, username)
-    .query('SELECT * FROM users WHERE username = @username');
-    if (!result.recordset[0]) {
+      const pool = await sql.connect(config);
+      const result = await pool.request()
+        .input('username', sql.VarChar, username)
+        .query('SELECT id, username, password, accountType FROM users WHERE username = @username');
+  
+      if (!result.recordset[0]) {
         res.status(401).send({ error: 'Username or password is incorrect' });
       } else {
         const row = result.recordset[0];
-        console.log(result.recordset[0].id);
-        const id = result.recordset[0].id;
         const isMatch = await bcrypt.compare(password, row.password);
-      
+  
         if (isMatch) {
           await pool.request()
             .input('username', sql.VarChar, username)
             .input('token', sql.VarChar, randomToken)
-            .query(
-              `INSERT INTO activeUsers (username, token) VALUES (@username, @token)`
-            );
-      
-          res.send({ message: randomToken, message1: id});
+            .query(`INSERT INTO activeUsers (username, token) VALUES (@username, @token)`);
+  
+          const id = row.id;
+          const accountType = row.accountType;
+  
+          res.send({ message: randomToken, userId: id, accountType });
         } else {
           res.status(401).send({ error: 'Username or password is incorrect' });
         }
       }
     } catch (err) {
-        console.error(err);
-        res.status(500).send({ error: 'Error logging in' });
-        }
- });      
+      console.error(err);
+      res.status(500).send({ error: 'Error logging in' });
+    }
+  });
+  
 
  app.post('/api/activeToken', (req, res) => {
   const { token } = req.body;
