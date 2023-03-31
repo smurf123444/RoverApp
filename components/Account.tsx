@@ -60,7 +60,7 @@ const AccountPage: React.FC<UserProps> = (props) => {
       <Container sx={{ backgroundColor: "white"}}>
       <Typography variant="body1" gutterBottom>
        
-        <Link href="#"> BALANCE FOR DOG SITTING</Link>
+        <Link href="/balance"> BALANCE FOR DOG SITTING</Link>
       </Typography>
       </Container>
       <Container sx={{ backgroundColor: "white"}}>

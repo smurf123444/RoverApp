@@ -50,6 +50,8 @@ const BottomNav = () => {
       >
         <MenuItem onClick={handleClose}><Link sx={{color: 'black'}}href="/account"> Account </Link></MenuItem>
         <MenuItem onClick={handleClose}><Link sx={{color: 'black'}}href="/messages"> Messages </Link></MenuItem>
+        <MenuItem onClick={handleClose}><Link sx={{color: 'black'}}href="/search"> Search </Link></MenuItem>
+        <MenuItem onClick={handleClose}><Link sx={{color: 'black'}}href="/balance"> Balance </Link></MenuItem>
       </Menu>
 
       </Container>

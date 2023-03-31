@@ -73,37 +73,23 @@ const handleInfo = async () => {
   if(authenticated = true)
   {
     return (
-        <div>
-        <TopNav/>
-        <br></br>
-        <AccountPage
-            username={username}
-            avatarUrl={avatarUrl}
-            messages={["Hello", "Hi there"]}
-            balance={50}
-            sitterResources={["Take Rover 101", "Get advice from our Q&A Community"]}
-            promoCode="PROMO123"
-            referralCode="REFERRAL456"
-            pets={[
-              {
-                name: "Mittens",
-                breed: "Siamese",
-                age: 3,
-                size: "small",
-                temperment: "friendly",
-              },
-              {
-                name: "Fluffy",
-                breed: "Persian",
-                age: 5,
-                size: "medium",
-                temperment: "shy",
-              },
-            ]}
-          />
-        <br></br>
-        <BottomNav/>
-        </div>
+<div>
+  <TopNav />
+  <br />
+  <AccountPage
+    username={username}
+    avatarUrl={avatarUrl}
+    messages={["Hello", "Hi there"]}
+    balance={50}
+    sitterResources={["Take Rover 101", "Get advice from our Q&A Community"]}
+    promoCode="PROMO123"
+    referralCode="REFERRAL456"
+    pets={[      { name: "Mittens", breed: "Siamese", age: 3, size: "small", temperament: "friendly" },      { name: "Fluffy", breed: "Persian", age: 5, size: "medium", temperament: "shy" },    ]}
+  />
+  <br />
+  <BottomNav />
+</div>
+
       );
   }
   else{

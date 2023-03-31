@@ -87,8 +87,8 @@ const SearchPage = () => {
         <Typography variant="body1">No results found.</Typography>
       ) : (
         <SearchResultList>
-          {results.map((record) => (
-            <SearchResultItem key={record}>
+
+            <SearchResultItem>
             <TableContainer component={Paper}>
             <Table>
                 <TableHead>
@@ -138,7 +138,7 @@ const SearchPage = () => {
             </TableContainer>
 
             </SearchResultItem>
-          ))}
+        
         </SearchResultList>
       )}
       <BottomNav />
