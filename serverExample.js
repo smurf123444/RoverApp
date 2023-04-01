@@ -203,7 +203,21 @@ app.put('/api/messageReceive/', async (req, res) => {
   }
 });
 
+app.post('/api/orders', async (req, res) => {
+  const { user } = req.body;
+console.log("orders Called")
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request()
+          .input('user', sql.VarChar(255), user)
+          .execute('GetOrdersByUser');
 
+      res.send({ data: result.recordset });
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send({ error: 'Error fetching orders' });
+  }
+});
 
 app.post('/api/accountInfo', async (req, res) => {
   const { username } = req.body;
