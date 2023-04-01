@@ -15,6 +15,7 @@ import axios from 'axios';
 import TopNav from "../components/nav/TopNav";
 import BottomNav from "../components/nav/BottomNav";
 import { getCookie } from 'typescript-cookie';
+import { setTheUsername } from 'whatwg-url';
 
 const SearchContainer = styled('div')({
   display: 'flex',
@@ -52,9 +53,12 @@ const SearchPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [accountType, setAccountType] = useState('');
+  const [username, setUsername] = useState('');
 
   useEffect (() => {
     let accountType = getCookie('AccountType')
+    let username = getCookie('Username')
+    setUsername(username)
     setAccountType(accountType)
   }, [])
 
@@ -74,7 +78,25 @@ const SearchPage = () => {
 
     setIsLoading(false);
   };
-
+  const handleRowSelect = async (record) => {
+    try {
+      const response = await axios.post('http://192.168.4.45:3000/api/placeOrder', {
+        type: 'listing',
+        status: 'pending',
+        fromUser: username,
+        toUser: record.username,
+        price: '0',
+        dateStarted: new Date(),
+        dateDue: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Due date is 7 days from now
+      });
+      console.log(response.data);
+      alert('Order placed successfully');
+    } catch (error) {
+      console.error(error);
+      alert('Error placing order');
+    }
+  };
+  
   return (
  
     <SearchContainer>
@@ -118,29 +140,30 @@ const SearchPage = () => {
                 <TableBody>
                 {results.map((record) => (
                     <TableRow key={record}>
-                    <TableCell>{record.listingName}</TableCell>
-                    <TableCell>{record.AboutMe}</TableCell>
-                    <TableCell>{record.AboutHome}</TableCell>
-                    <TableCell>{record.AboutPets}</TableCell>
-                    <TableCell>{record.PicturesURLs}</TableCell>
-                    <TableCell>{record.Services}</TableCell>
-                    <TableCell>{record.SizeCanHost}</TableCell>
-                    <TableCell>{record.SizeCanWatch}</TableCell>
-                    <TableCell>{record.Availability}</TableCell>
-                    <TableCell>{record.Address}</TableCell>
-                    <TableCell>{record.TypicalTodo}</TableCell>
-                    <TableCell>{record.username}</TableCell>
-                    <TableCell>
-                        {/* <Button onClick={() => handleRowSelect(record)}>Select</Button> */}
-                    </TableCell>
+                        <TableCell>{record.listingName}</TableCell>
+                        <TableCell>{record.AboutMe}</TableCell>
+                        <TableCell>{record.AboutHome}</TableCell>
+                        <TableCell>{record.AboutPets}</TableCell>
+                        <TableCell>{record.PicturesURLs}</TableCell>
+                        <TableCell>{record.Services}</TableCell>
+                        <TableCell>{record.SizeCanHost}</TableCell>
+                        <TableCell>{record.SizeCanWatch}</TableCell>
+                        <TableCell>{record.Availability}</TableCell>
+                        <TableCell>{record.Address}</TableCell>
+                        <TableCell>{record.TypicalTodo}</TableCell>
+                        <TableCell>{record.username}</TableCell>
+                        <TableCell>
+                            <Button variant="contained" color="primary" onClick={() => handleRowSelect(record)}>Select</Button>
+                        </TableCell>
                     </TableRow>
                 ))}
                 {results.length === 0 && (
                     <TableRow>
-                    <TableCell colSpan={13}>No results found.</TableCell>
+                        <TableCell colSpan={13}>No results found.</TableCell>
                     </TableRow>
                 )}
-                </TableBody>
+            </TableBody>
+
             </Table>
             </TableContainer>
 

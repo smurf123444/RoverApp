@@ -60,7 +60,6 @@ console.log("PROPS: "+ accountType)
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        <MenuItem onClick={handleClose}><Link sx={{color: 'black'}}href="/account"> Account </Link></MenuItem>
 
         <MenuItem onClick={handleClose}><Link sx={{color: 'black'}}href="/messages"> Messages </Link></MenuItem>
         <MenuItem onClick={handleClose}><Link sx={{color: 'black'}}href="/search"> Search </Link></MenuItem>
@@ -96,51 +95,24 @@ console.log("PROPS: "+ accountType)
       </Container>
 
       <Container>
-      <Button
-        id="fade-button"
-        aria-controls={open1 ? 'fade-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open1 ? 'true' : undefined}
-        onClick={handleClick2}
-      >
-        <MenuItem sx={{color: 'white'}}> ORDERS </MenuItem>
-      </Button>
-      <Menu
-        id="fade-menu"
-        MenuListProps={{
-          'aria-labelledby': 'fade-button',
-        }}
-        anchorEl={anchorEl2}
-        open={open2}
-        onClose={handleClose2}
-        TransitionComponent={Fade}
-      >
-        <MenuItem onClick={handleClose2}>      <Link sx={{color: 'black'}}href="/active"> Active </Link></MenuItem>
-        <MenuItem onClick={handleClose2}>     <Link sx={{color: 'black'}}href="/pending"> Pending  </Link></MenuItem>
-        <MenuItem onClick={handleClose2}>     <Link sx={{color: 'black'}}href="/past"> Past </Link></MenuItem>
-      </Menu>
+      <MenuItem onClick={handleClose}><Link sx={{color: 'white', marginLeft: '10%'}}href="/orders"> ORDERS </Link></MenuItem>
       </Container>
-
-
-
-      <Container>        
-            <MenuItem onClick={handleClose}><Link sx={{color: 'white', marginLeft: '10%'}}href="/logout"> Logout </Link></MenuItem>
-            <MenuItem onClick={handleClose}><Link sx={{color: 'white',  marginLeft: '10%'}}href="/register"> Register </Link></MenuItem>
-      </Container>
-      <Container>
       {accountType === '2' ? (
+            <Container>  
               <MenuItem onClick={handleClose}>
                 <Link sx={{ color: "white", marginLeft: "10%" }} href="/admin">
                   Admin Panel
                 </Link>
               </MenuItem>
+              </Container>
             ) : (
               <div>Some other content here</div>
             )}
 
+      <Container>
 
       <MenuItem onClick={handleClose}>
-        <Link sx={{ color: "white", marginLeft: "10%" }} href="/profile">
+        <Link sx={{ color: "white", marginLeft: "10%" }} href="/account">
           Profile
         </Link>
       </MenuItem>
@@ -149,6 +121,8 @@ console.log("PROPS: "+ accountType)
           Settings
         </Link>
       </MenuItem>
+      <MenuItem onClick={handleClose}><Link sx={{color: 'white', marginLeft: '10%'}}href="/logout"> Logout </Link></MenuItem>
+
     </Container>
   </Toolbar>
 </AppBar>
