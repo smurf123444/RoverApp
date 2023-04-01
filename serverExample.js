@@ -205,6 +205,7 @@ app.put('/api/messageReceive/', async (req, res) => {
 
 app.post('/api/orders', async (req, res) => {
   const { user } = req.body;
+  console.log(req.body)
 console.log("orders Called")
   try {
       const pool = await sql.connect(config);
@@ -218,6 +219,29 @@ console.log("orders Called")
       res.status(500).send({ error: 'Error fetching orders' });
   }
 });
+
+app.post('/api/placeOrder', async (req, res) => {
+  const { type, status, fromUser, toUser, price, dateStarted, dateDue } = req.body;
+
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('type', sql.VarChar(255), type)
+      .input('status', sql.VarChar(255), status)
+      .input('fromUser', sql.VarChar(255), fromUser)
+      .input('toUser', sql.VarChar(255), toUser)
+      .input('price', sql.VarChar(255), price)
+      .input('dateStarted', sql.VarChar(255), dateStarted)
+      .input('dateDue', sql.VarChar(255), dateDue)
+      .execute('AddOrder');
+
+    res.send({ success: true });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send({ error: 'Error adding order' });
+  }
+});
+
 
 app.post('/api/accountInfo', async (req, res) => {
   const { username } = req.body;
