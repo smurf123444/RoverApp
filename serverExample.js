@@ -242,6 +242,23 @@ app.post('/api/placeOrder', async (req, res) => {
   }
 });
 
+app.post('/api/updateOrderStatus', async (req, res) => {
+  const { orderID, status } = req.body;
+
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('orderID', sql.Int, orderID)
+      .input('status', sql.VarChar(255), status)
+      .execute('update_order_status');
+
+    res.send({ success: true });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send({ error: 'Error updating order status' });
+  }
+});
+
 
 app.post('/api/accountInfo', async (req, res) => {
   const { username } = req.body;
