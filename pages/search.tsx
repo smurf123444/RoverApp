@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {   Box,
+import { useEffect, useState } from 'react';
+import {  
     Button,
     Paper,
     Table,
@@ -9,13 +9,13 @@ import {   Box,
     TableHead,
     TableRow,
     Typography,
-    TextField} from '@mui/material';
+    TextField, Dialog, DialogTitle, DialogContent, DialogContentText,DialogActions} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
 import TopNav from "../components/nav/TopNav";
 import BottomNav from "../components/nav/BottomNav";
 import { getCookie } from 'typescript-cookie';
-import { setTheUsername } from 'whatwg-url';
+
 
 const SearchContainer = styled('div')({
   display: 'flex',
@@ -48,13 +48,24 @@ const SearchResultItem = styled('li')({
 });
 
 const SearchPage = () => {
-  const [toUser, setToUser] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [accountType, setAccountType] = useState('');
   const [username, setUsername] = useState('');
-
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [type, setType] = useState('');
+  const [status, setStatus] = useState('');
+  const [fromUser, setFromUser] = useState('');
+  const [toUser, setToUser] = useState('');
+  const [price, setPrice] = useState('');
+  const [dateStarted, setDateStarted] = useState('');
+  const [dateDue, setDateDue] = useState('');
+  const handleClose = () => {
+    setIsDialogOpen(false);
+    setToUser('');
+  };
   useEffect (() => {
     let accountType = getCookie('AccountType')
     let username = getCookie('Username')
@@ -79,15 +90,30 @@ const SearchPage = () => {
     setIsLoading(false);
   };
   const handleRowSelect = async (record) => {
+    setSelectedRecord(record);
+    setToUser(record.username)
+    setIsDialogOpen(true);
+  };
+
+  const handleSave = async (record) => {
+    console.log({
+      type,
+      status,
+      fromUser,
+      toUser,
+      price,
+      dateStarted,
+      dateDue,
+    });
     try {
       const response = await axios.post('http://192.168.4.45:3000/api/placeOrder', {
-        type: 'listing',
-        status: 'pending',
+        type: type,
+        status: 'Pending',
         fromUser: username,
-        toUser: record.username,
-        price: '0',
-        dateStarted: new Date(),
-        dateDue: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Due date is 7 days from now
+        toUser: toUser,
+        price: price,
+        dateStarted: dateStarted,
+        dateDue: dateDue, // Due date is 7 days from now
       });
       console.log(response.data);
       alert('Order placed successfully');
@@ -95,8 +121,9 @@ const SearchPage = () => {
       console.error(error);
       alert('Error placing order');
     }
+    setIsDialogOpen(false);
+    setToUser('');
   };
-  
   return (
  
     <SearchContainer>
@@ -153,8 +180,53 @@ const SearchPage = () => {
                         <TableCell>{record.TypicalTodo}</TableCell>
                         <TableCell>{record.username}</TableCell>
                         <TableCell>
-                            <Button variant="contained" color="primary" onClick={() => handleRowSelect(record)}>Select</Button>
-                        </TableCell>
+                      <Button variant="contained" color="primary" onClick={() => handleRowSelect(record)}>Select</Button>
+                    </TableCell>
+                    <Dialog open={isDialogOpen} onClose={handleClose}>
+                      <DialogTitle>Selected Record:</DialogTitle>
+                      <DialogContent>
+                        <DialogContentText>
+                          Enter the details:
+                        </DialogContentText>
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          label="Type"
+                          fullWidth
+                          value={type}
+                          onChange={(e) => setType(e.target.value)}
+                        />
+                        <TextField
+                          margin="dense"
+                          label="Price"
+                          fullWidth
+                          value={price}
+                          onChange={(e) => setPrice(e.target.value)}
+                        />
+                        <TextField
+                          margin="dense"
+                          label="Date Started"
+                          fullWidth
+                          value={dateStarted}
+                          onChange={(e) => setDateStarted(e.target.value)}
+                        />
+                        <TextField
+                          margin="dense"
+                          label="Date Due"
+                          fullWidth
+                          value={dateDue}
+                          onChange={(e) => setDateDue(e.target.value)}
+                        />
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                          Cancel
+                        </Button>
+                        <Button onClick={handleSave} color="primary">
+                          Save
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                     </TableRow>
                 ))}
                 {results.length === 0 && (

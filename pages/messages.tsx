@@ -57,27 +57,24 @@ useEffect(() => {
 
         // handle message recieve
 
-
+        username = getCookie('Username')
+        const handleMessageRecieve = async () => {
+            try {
+                const response = await axios.put<any[]>('http://192.168.4.45:3000/api/messageReceive/', {
+                    toUser: username,
+                });
+                console.log(response)
+                setMessages(response.data);
+             //   console.log(response.data);
+            } catch (error) {
+                console.error(error);
+                console.log("Couldn't receive message....");
+            }
+        }
+        handleMessageRecieve();
     }, []); // empty dependency array to run the effect only once on mount
 
-useEffect(() => {
-     username = getCookie('Username')
-    const handleMessageRecieve = async () => {
-        try {
-            const response = await axios.put<any[]>('http://192.168.4.45:3000/api/messageReceive/', {
-                toUser: username,
-            });
-            console.log(response)
-            setMessages(response.data);
-         //   console.log(response.data);
-        } catch (error) {
-            console.error(error);
-            console.log("Couldn't receive message....");
-        }
-    }
-    handleMessageRecieve();
-    //set up refresh button.
-}, [])
+
 
             const handleChangeMessage = event => {
                 setMessage(event.target.value);

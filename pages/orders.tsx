@@ -58,6 +58,7 @@ const PendingOrdersPage = () => {
     pendingOrdersByStatus[order.status] = pendingOrdersByStatus[order.status] || [];
     pendingOrdersByStatus[order.status].push(order);
   });
+  
   const handleNewOrderClick = async (orderId) => {
     console.log(`Handle New Order Clicked for Order Id: ${orderId}`);
     try {
