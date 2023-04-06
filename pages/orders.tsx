@@ -27,7 +27,7 @@ const PendingOrdersPage = () => {
     setAccountType(accountType)
     const fetchPendingOrders = async () => {
       setIsLoading(true);
-  
+      
       try {
         const response = await axios.post('http://192.168.4.45:3000/api/orders/', {
           user: username,
@@ -54,6 +54,7 @@ const PendingOrdersPage = () => {
     'Accepted': [],
     'Completed': [],
     'Canceled': [],
+    'Archived': [],
   };
 
   pendingOrders.forEach((order) => {
@@ -73,6 +74,26 @@ const PendingOrdersPage = () => {
       const updatedOrders = pendingOrders.map((order) => {
         if (order.ID === orderId) {
           return { ...order, status: 'Meet And Greet' };
+        }
+        return order;
+      });
+      setPendingOrders(updatedOrders);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleCancelOrderClick = async (orderId) => {
+    console.log(`Handle New Order Clicked for Order Id: ${orderId}`);
+    try {
+      const response = await axios.post('http://192.168.4.45:3000/api/updateOrderStatus', {
+        orderID: orderId,
+        status: 'Canceled'
+      });
+      console.log(response.data);
+      // Update the order's status in the local state
+      const updatedOrders = pendingOrders.map((order) => {
+        if (order.ID === orderId) {
+          return { ...order, status: 'Canceled' };
         }
         return order;
       });
@@ -108,13 +129,13 @@ const PendingOrdersPage = () => {
     try {
       const response = await axios.post('http://192.168.4.45:3000/api/updateOrderStatus', {
         orderID: orderId,
-        status: 'Archived'
+        status: 'Completed'
       });
       console.log(response.data);
       // Update the order's status in the local state
       const updatedOrders = pendingOrders.map((order) => {
         if (order.ID === orderId) {
-          return { ...order, status: 'Archived' };
+          return { ...order, status: 'Completed' };
         }
         return order;
       });
@@ -129,13 +150,13 @@ const PendingOrdersPage = () => {
     try {
       const response = await axios.post('http://192.168.4.45:3000/api/updateOrderStatus', {
         orderID: orderId,
-        status: 'ArchivedCanceled'
+        status: 'Archived'
       });
       console.log(response.data);
       // Update the order's status in the local state
       const updatedOrders = pendingOrders.map((order) => {
         if (order.ID === orderId) {
-          return { ...order, status: 'ArchivedCanceled' };
+          return { ...order, status: 'Archived' };
         }
         return order;
       });
@@ -201,7 +222,7 @@ const PendingOrdersPage = () => {
     </TableHead>
     <TableBody>
     {pendingOrdersByStatus[status].map((order, index) => (
-    <TableRow key={index}>
+  <TableRow key={index}>
     <TableCell>{order.type}</TableCell>
     <TableCell>{order.fromUser}</TableCell>
     <TableCell>{order.toUser}</TableCell>
@@ -210,22 +231,44 @@ const PendingOrdersPage = () => {
     <TableCell>{order.price}</TableCell>
     <TableCell>{order.meetAndGreet ? "Yes" : "No"}</TableCell>
     <TableCell>
-    {status === 'Pending' ? (
-    <Button onClick={() => handleNewOrderClick(order.ID)}>Accept</Button>
-    ) : status === 'Meet And Greet' ? (
-    <Button onClick={() => handleMeetAndGreetClick(order.ID)}>Meet And Greet</Button>
-    ) : status === 'Accepted' ? (
-      <Button onClick={() => handleInProgressClick(order.ID)}>In Progress</Button>
-      ): status === 'Canceled' ? (
-        <Button onClick={() => handleArchiveClick(order.ID)}>Archive</Button>
-        ): status === 'Archived' ? (
-          <Button onClick={() => handleArchiveClick(order.ID)}>Archived</Button>
-          ) : (
-    <Button onClick={() => handleCompletedClick(order.ID)}>Complete (Archive)</Button>
-    )}
-    </TableCell>
-    </TableRow>
+    {(status === 'Pending') &&
+    (order.toUser === username ? (
+      <>
+        <Button onClick={() => handleNewOrderClick(order.ID)}>Accept</Button>
+        <Button onClick={() => handleCancelOrderClick(order.ID)}>Cancel</Button>
+      </>
+    ) : (
+      <Button onClick={() => handleCancelOrderClick(order.ID)}>Cancel</Button>
+    ))
+      }
+      {status === 'Meet And Greet' &&     
+      (order.toUser === username ? (
+      <>
+        <Button onClick={() => handleMeetAndGreetClick(order.ID)}>Meet And Greet</Button>
+        <Button onClick={() => handleCancelOrderClick(order.ID)}>Cancel</Button>
+      </>
+    ) : (
+      <Button onClick={() => handleCancelOrderClick(order.ID)}>Cancel</Button>
     ))}
+{status === 'Accepted' && (
+  <Button onClick={() => handleInProgressClick(order.ID)}>In Progress</Button>
+)}
+{status === 'Canceled' && (
+  <Button onClick={() => handleArchiveClick(order.ID)}>Archive</Button>
+)}
+{status === 'Archived' && (
+  <Button onClick={() => handleArchiveClick(order.ID)}>Archived</Button>
+)}
+{status === 'Completed' && (
+  <Button onClick={() => handleArchiveClick(order.ID)}>Complete (Archive)</Button>
+)}
+
+
+
+    </TableCell>
+  </TableRow>
+))}
+
     </TableBody>
     </Table>
     </TableContainer>
