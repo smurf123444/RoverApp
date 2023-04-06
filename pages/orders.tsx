@@ -50,8 +50,10 @@ const PendingOrdersPage = () => {
   
   const pendingOrdersByStatus = {
     'Pending': [],
+    'Meet And Greet': [],
     'Accepted': [],
     'Completed': [],
+    'Canceled': [],
   };
 
   pendingOrders.forEach((order) => {
@@ -64,6 +66,91 @@ const PendingOrdersPage = () => {
     try {
       const response = await axios.post('http://192.168.4.45:3000/api/updateOrderStatus', {
         orderID: orderId,
+        status: 'Meet And Greet'
+      });
+      console.log(response.data);
+      // Update the order's status in the local state
+      const updatedOrders = pendingOrders.map((order) => {
+        if (order.ID === orderId) {
+          return { ...order, status: 'Meet And Greet' };
+        }
+        return order;
+      });
+      setPendingOrders(updatedOrders);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleInProgressClick = async (orderId) => {
+    console.log(`Handle In Progress Clicked for Order Id: ${orderId}`);
+    try {
+      const response = await axios.post('http://192.168.4.45:3000/api/updateOrderStatus', {
+        orderID: orderId,
+        status: 'Completed'
+      });
+      console.log(response.data);
+      // Update the order's status in the local state
+      const updatedOrders = pendingOrders.map((order) => {
+        if (order.ID === orderId) {
+          return { ...order, status: 'Completed'};
+        }
+        return order;
+      });
+      setPendingOrders(updatedOrders);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCompletedClick = async (orderId) => {
+    console.log(`Handle Completed Clicked for Order Id: ${orderId}`);
+    try {
+      const response = await axios.post('http://192.168.4.45:3000/api/updateOrderStatus', {
+        orderID: orderId,
+        status: 'Archived'
+      });
+      console.log(response.data);
+      // Update the order's status in the local state
+      const updatedOrders = pendingOrders.map((order) => {
+        if (order.ID === orderId) {
+          return { ...order, status: 'Archived' };
+        }
+        return order;
+      });
+      setPendingOrders(updatedOrders);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleArchiveClick = async (orderId) => {
+    console.log(`Handle Completed Clicked for Order Id: ${orderId}`);
+    try {
+      const response = await axios.post('http://192.168.4.45:3000/api/updateOrderStatus', {
+        orderID: orderId,
+        status: 'ArchivedCanceled'
+      });
+      console.log(response.data);
+      // Update the order's status in the local state
+      const updatedOrders = pendingOrders.map((order) => {
+        if (order.ID === orderId) {
+          return { ...order, status: 'ArchivedCanceled' };
+        }
+        return order;
+      });
+      setPendingOrders(updatedOrders);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleMeetAndGreetClick = async (orderId) => {
+    console.log(`Handle Completed Clicked for Order Id: ${orderId}`);
+    try {
+      const response = await axios.post('http://192.168.4.45:3000/api/updateOrderStatus', {
+        orderID: orderId,
+        status: 'Accepted'
       });
       console.log(response.data);
       // Update the order's status in the local state
@@ -79,28 +166,9 @@ const PendingOrdersPage = () => {
     }
   };
 
-  const handleInProgressClick = (orderId) => {
-    console.log(`Handle In Progress Clicked for Order Id: ${orderId}`);
-  };
-
-  const handleCompletedClick = (orderId) => {
-    console.log(`Handle Completed Clicked for Order Id: ${orderId}`);
-  };
-
-  const getButtonFunction = (type, orderId) => {
-    switch(type) {
-      case 'Pending':
-        return () => handleNewOrderClick(orderId);
-      case 'Accepted':
-        return () => handleInProgressClick(orderId);
-      case 'Completed':
-        return () => handleCompletedClick(orderId);
-      default:
-        return null;
-    }
-  };
-
   return (
+   
+
     <Box sx={{ m: '50px auto', maxWidth: '1000px' }}>
     <TopNav accountType={accountType} />
     {isLoading ? (
@@ -144,10 +212,16 @@ const PendingOrdersPage = () => {
     <TableCell>
     {status === 'Pending' ? (
     <Button onClick={() => handleNewOrderClick(order.ID)}>Accept</Button>
+    ) : status === 'Meet And Greet' ? (
+    <Button onClick={() => handleMeetAndGreetClick(order.ID)}>Meet And Greet</Button>
     ) : status === 'Accepted' ? (
-    <Button onClick={() => handleInProgressClick(order.ID)}>In Progress</Button>
-    ) : (
-    <Button onClick={() => handleCompletedClick(order.ID)}>Complete</Button>
+      <Button onClick={() => handleInProgressClick(order.ID)}>In Progress</Button>
+      ): status === 'Canceled' ? (
+        <Button onClick={() => handleArchiveClick(order.ID)}>Archive</Button>
+        ): status === 'Archived' ? (
+          <Button onClick={() => handleArchiveClick(order.ID)}>Archived</Button>
+          ) : (
+    <Button onClick={() => handleCompletedClick(order.ID)}>Complete (Archive)</Button>
     )}
     </TableCell>
     </TableRow>

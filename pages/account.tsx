@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {use, useEffect, useState} from "react";
 import { useRouter } from 'next/router';
 import { getCookie } from 'typescript-cookie';
 import axios from "axios";
@@ -22,6 +22,8 @@ export default function Auth() {
 
     const router = useRouter()
     let authenticated = false;
+
+
 
   useEffect(() => {
     let tokenCall = getCookie('Token')
