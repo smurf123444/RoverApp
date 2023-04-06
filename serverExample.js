@@ -118,7 +118,8 @@ app.put('/api/EditUserInfo', (req, res) => {
     .input('data10', sql.VarChar, req.body.data10)
     .input('data11', sql.VarChar, req.body.data11)
     .input('data12', sql.VarChar, req.body.data12)
-    .query(`UPDATE userInfo SET listingName = @data1, AboutMe = @data2, AboutHome = @data3, AboutPets = @data4, PicturesURLs = @data5, Services = @data6, SizeCanHost = @data7, SizeCanWatch = @data8, Availability = @data9, Address = @data10, TypicalTodo = @data11 WHERE username = @data12`, (err) => {
+    .input('data13', sql.VarChar, req.body.data13)
+    .query(`UPDATE userInfo SET listingName = @data1, AboutMe = @data2, AboutHome = @data3, AboutPets = @data4, PicturesURLs = @data5, Services = @data6, SizeCanHost = @data7, SizeCanWatch = @data8, Availability = @data9, Address = @data10, TypicalTodo = @data11, pricePerDay = @data13 WHERE username = @data12`, (err) => {
       if (err) {
         console.error(err);
         console.log('Error in UPDATE');
@@ -205,8 +206,7 @@ app.put('/api/messageReceive/', async (req, res) => {
 
 app.post('/api/orders', async (req, res) => {
   const { user } = req.body;
-  console.log(req.body)
-console.log("orders Called")
+
   try {
       const pool = await sql.connect(config);
       const result = await pool.request()
@@ -221,7 +221,7 @@ console.log("orders Called")
 });
 
 app.post('/api/placeOrder', async (req, res) => {
-  const { type, status, fromUser, toUser, price, dateStarted, dateDue } = req.body;
+  const { type, status, fromUser, toUser, price, dateStarted, dateDue, meetAndGreet } = req.body;
 
   try {
     const pool = await sql.connect(config);
@@ -229,6 +229,7 @@ app.post('/api/placeOrder', async (req, res) => {
       .input('type', sql.VarChar(255), type)
       .input('status', sql.VarChar(255), status)
       .input('fromUser', sql.VarChar(255), fromUser)
+      .input('meetAndGreet', sql.VarChar(255), meetAndGreet)
       .input('toUser', sql.VarChar(255), toUser)
       .input('price', sql.VarChar(255), price)
       .input('dateStarted', sql.VarChar(255), dateStarted)
@@ -244,12 +245,12 @@ app.post('/api/placeOrder', async (req, res) => {
 
 app.post('/api/updateOrderStatus', async (req, res) => {
   const { orderID, status } = req.body;
-
+  console.log(req.body)
+  console.log("updateOrderStatus Called")
   try {
     const pool = await sql.connect(config);
     const result = await pool.request()
       .input('orderID', sql.Int, orderID)
-      .input('status', sql.VarChar(255), status)
       .execute('update_order_status');
 
     res.send({ success: true });
