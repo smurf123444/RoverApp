@@ -43,9 +43,9 @@ const AccountPage: React.FC<UserProps> = (props) => {
   
          {username}
          <br></br>
-         <Link href="/edit">EDIT PROFILE</Link>
+         <Link href="/edit">EDIT LISTING</Link>
          <br></br>
-         <Link href="/member">VIEW PROFILE</Link>
+         <Link href="/member">VIEW LISTING</Link>
       </Typography>
       </Container>
       <Container sx={{ backgroundColor: "white"}}>

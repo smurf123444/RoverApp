@@ -25,6 +25,7 @@ export default function Edit() {
     const [sizeCanWatch, setSizeCanWatch] = useState('');
     const [availability, setAvailability] = useState('');
     const [address, setAddress] = useState('');
+    const [pricePerDay, setPricePerDay] = useState('');
     const [typicalTodo, setTypicalTodo] = useState('');
 
 
@@ -109,6 +110,9 @@ const handleInfo = async () => {
       setTypicalTodo(
         response.data.data.TypicalTodo.toString()
       );
+      setPricePerDay(
+        response.data.data.pricePerDay.toString()
+      );
       console.log(response.data.data.ID)
         return(response.data.data)
     } catch (error) {
@@ -145,6 +149,7 @@ const handleInfo = async () => {
                 data9: availability,
                 data10: address,
                 data11: typicalTodo,
+                data13: pricePerDay
             });
 /*             console.log(availability); */
         } catch (err) {
@@ -289,6 +294,17 @@ Edit Profile
            id="typicalTodo"
            value={typicalTodo}
            onChange={(e) => setTypicalTodo(e.target.value)} 
+         />
+         <TextField
+           variant="outlined"
+           margin="normal"
+           required
+           fullWidth
+           name="pricePerDay"
+           label="Price Per Day"
+           id="priceperday"
+           value={pricePerDay}
+           onChange={(e) => setPricePerDay(e.target.value)} 
          />
 <Button
            type="submit"

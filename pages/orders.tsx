@@ -58,7 +58,7 @@ const PendingOrdersPage = () => {
     pendingOrdersByStatus[order.status] = pendingOrdersByStatus[order.status] || [];
     pendingOrdersByStatus[order.status].push(order);
   });
-  
+
   const handleNewOrderClick = async (orderId) => {
     console.log(`Handle New Order Clicked for Order Id: ${orderId}`);
     try {
@@ -127,6 +127,7 @@ const PendingOrdersPage = () => {
     <TableCell>Order Start Date</TableCell>
     <TableCell>Order End Date</TableCell>
     <TableCell>Order Total</TableCell>
+    <TableCell>Meet and Greet?</TableCell>
     <TableCell>Actions</TableCell>
     </TableRow>
     </TableHead>
@@ -139,6 +140,7 @@ const PendingOrdersPage = () => {
     <TableCell>{order.dateStarted}</TableCell>
     <TableCell>{order.dateDue}</TableCell>
     <TableCell>{order.price}</TableCell>
+    <TableCell>{order.meetAndGreet ? "Yes" : "No"}</TableCell>
     <TableCell>
     {status === 'Pending' ? (
     <Button onClick={() => handleNewOrderClick(order.ID)}>Accept</Button>

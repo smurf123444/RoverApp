@@ -9,7 +9,16 @@ import {
     TableHead,
     TableRow,
     Typography,
-    TextField, Dialog, DialogTitle, DialogContent, DialogContentText,DialogActions} from '@mui/material';
+    TextField, 
+    Dialog, 
+    DialogTitle, 
+    DialogContent, 
+    DialogContentText,
+    DialogActions,
+    Select, InputLabel, MenuItem, Checkbox} from '@mui/material';
+    import { DatePicker } from '@mui/x-date-pickers';
+    import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+    import { LocalizationProvider } from '@mui/x-date-pickers';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
 import TopNav from "../components/nav/TopNav";
@@ -54,14 +63,20 @@ const SearchPage = () => {
   const [accountType, setAccountType] = useState('');
   const [username, setUsername] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState(null);
-  const [type, setType] = useState('');
+  const [selectedRecord, setSelectedRecord] = useState({pricePerDay: 10});
+  const [type, setType] = useState('Boarding');
   const [status, setStatus] = useState('');
   const [fromUser, setFromUser] = useState('');
   const [toUser, setToUser] = useState('');
   const [price, setPrice] = useState('');
   const [dateStarted, setDateStarted] = useState('');
   const [dateDue, setDateDue] = useState('');
+  const [isChecked, setIsChecked] = useState(true);
+  const [estimatedPrice, setEstimatedPrice] = useState(0);
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+  };
   const handleClose = () => {
     setIsDialogOpen(false);
     setToUser('');
@@ -110,8 +125,9 @@ const SearchPage = () => {
         type: type,
         status: 'Pending',
         fromUser: username,
+        meetAndGreet: isChecked.toString(),
         toUser: toUser,
-        price: price,
+        price: estimatedPrice.toString(),
         dateStarted: dateStarted,
         dateDue: dateDue, // Due date is 7 days from now
       });
@@ -124,9 +140,28 @@ const SearchPage = () => {
     setIsDialogOpen(false);
     setToUser('');
   };
+
+  useEffect (() => {
+    const calculatePrice = () => {
+      if (dateStarted && dateDue) {
+        const startDate = new Date(dateStarted);
+        const dueDate = new Date(dateDue);
+        const timeDiff = Math.abs(dueDate.getTime() - startDate.getTime());
+        const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        return selectedRecord.pricePerDay * diffDays;
+      }
+      return 0;
+    };
+    const estimatedPrice = calculatePrice();
+    setEstimatedPrice(estimatedPrice);
+  }, [dateStarted, dateDue])
+
+
+
   return (
  
     <SearchContainer>
+      
            <TopNav accountType={accountType}/>
       <Typography variant="h4">Search for Listings</Typography>
       <SearchForm onSubmit={handleSubmit}>
@@ -161,6 +196,7 @@ const SearchPage = () => {
                     <TableCell>Address</TableCell>
                     <TableCell>Typical Todo</TableCell>
                     <TableCell>Username</TableCell>
+                    <TableCell>Price Per Day</TableCell>
                     <TableCell></TableCell>
                 </TableRow>
                 </TableHead>
@@ -179,6 +215,7 @@ const SearchPage = () => {
                         <TableCell>{record.Address}</TableCell>
                         <TableCell>{record.TypicalTodo}</TableCell>
                         <TableCell>{record.username}</TableCell>
+                        <TableCell>{record.pricePerDay}</TableCell>
                         <TableCell>
                       <Button variant="contained" color="primary" onClick={() => handleRowSelect(record)}>Select</Button>
                     </TableCell>
@@ -188,35 +225,43 @@ const SearchPage = () => {
                         <DialogContentText>
                           Enter the details:
                         </DialogContentText>
-                        <TextField
+                        <InputLabel id="type-label">Type</InputLabel>
+                        <Select
+                          labelId="type-label"
+                          value={type}
+                          onChange={(e) => setType(e.target.value)}
                           autoFocus
                           margin="dense"
                           label="Type"
-                          fullWidth
-                          value={type}
-                          onChange={(e) => setType(e.target.value)}
-                        />
-                        <TextField
-                          margin="dense"
-                          label="Price"
-                          fullWidth
-                          value={price}
-                          onChange={(e) => setPrice(e.target.value)}
-                        />
-                        <TextField
-                          margin="dense"
+                        >
+                          <MenuItem value="Boarding">Boarding</MenuItem>
+                          <MenuItem value="Walking">Walking</MenuItem>
+                          <MenuItem value="Sitting">Sitting</MenuItem>
+                        </Select>
+                        <InputLabel id="type-label">Meet And Greet?</InputLabel>
+                          <Checkbox
+                            checked={isChecked}
+                            onChange={handleCheckboxChange}
+                            color="primary"
+                          />
+                          <DialogTitle>Price Per Day:    {selectedRecord.pricePerDay}</DialogTitle>
+
+                   <LocalizationProvider dateAdapter={AdapterDayjs}>
+                   <DatePicker
                           label="Date Started"
-                          fullWidth
                           value={dateStarted}
-                          onChange={(e) => setDateStarted(e.target.value)}
+                          onChange={(date) => setDateStarted(date)}
+                          renderInput={(params) => <TextField {...params} fullWidth />}
                         />
-                        <TextField
-                          margin="dense"
+                        <DatePicker
                           label="Date Due"
-                          fullWidth
                           value={dateDue}
-                          onChange={(e) => setDateDue(e.target.value)}
+                          onChange={(date) => setDateDue(date)}
+                          renderInput={(params) => <TextField {...params} fullWidth />}
                         />
+                  </LocalizationProvider>
+                  <DialogTitle>Estimated Price:    {estimatedPrice}</DialogTitle>
+                    
                       </DialogContent>
                       <DialogActions>
                         <Button onClick={handleClose} color="primary">
@@ -230,7 +275,7 @@ const SearchPage = () => {
                     </TableRow>
                 ))}
                 {results.length === 0 && (
-                    <TableRow>
+                    <TableRow>9
                         <TableCell colSpan={13}>No results found.</TableCell>
                     </TableRow>
                 )}
@@ -245,6 +290,7 @@ const SearchPage = () => {
       )}
       <BottomNav />
     </SearchContainer>
+    
   );
 };
 

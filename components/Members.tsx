@@ -23,6 +23,7 @@ interface UserProps {
   Availability: string;
   Address: string;
   TypicalTodo: string;
+  PricePerDay: string;
 }
 
 const MembersPage: React.FC<UserProps> = (props) => {
@@ -39,6 +40,7 @@ const MembersPage: React.FC<UserProps> = (props) => {
     Availability,
     Address,
     TypicalTodo,
+    PricePerDay,
   } = props;
 
   return (
@@ -93,6 +95,8 @@ const MembersPage: React.FC<UserProps> = (props) => {
             <Typography variant="body1">{TypicalTodo}</Typography>
             <Typography variant="subtitle1">Address:</Typography>
             <Typography variant="body1">{Address}</Typography>
+            <Typography variant="subtitle1">Price Per Day:</Typography>
+            <Typography variant="body1">{PricePerDay}</Typography>
             </Stack>
             </Grid>
             </Grid>

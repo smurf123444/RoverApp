@@ -26,7 +26,7 @@ export default function Auth() {
     const [availability, setAvailability] = useState('');
     const [address, setAddress] = useState('');
     const [typicalTodo, setTypicalTodo] = useState('');
-
+    const [pricePerDay, setPricePerDay] = useState('');
 
     const router = useRouter()
   let  authenticated = false;
@@ -104,6 +104,9 @@ const handleInfo = async () => {
       setTypicalTodo(
         response.data.data.TypicalTodo.toString()
       );
+      setPricePerDay(
+        response.data.data.pricePerDay.toString()
+      );
       console.log(response.data.data.ID)
         return(response.data.data)
     } catch (error) {
@@ -139,6 +142,7 @@ const handleInfo = async () => {
     Availability= {availability}
     Address= {address}
     TypicalTodo= {typicalTodo}
+    PricePerDay={pricePerDay}
     />
         <br></br>
         <BottomNav/>
